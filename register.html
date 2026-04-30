@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="唐卡传承公益体验课在线报名表" />
+  <title>课程报名 · 唐卡传承公益体验课</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="site-title">唐卡传承公益体验课</p>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html">首页</a>
+        <a href="register.html" aria-current="page">课程报名</a>
+        <a href="query.html">学员查询</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="main-wrap main-wrap--form">
+    <header class="form-page-header">
+      <div class="form-hero-icon" aria-hidden="true">
+        <img src="images/hero-lotus.svg" alt="" width="96" height="96" class="hero-mandala hero-mandala--small" loading="lazy" />
+      </div>
+      <h1 class="form-page-title">在线报名</h1>
+      <p class="form-page-lead">请如实填写以下信息。提交成功后系统将发送确认邮件；管理员将把您的资料录入<strong>腾讯表格</strong>存档。</p>
+    </header>
+
+    <div id="register-closed" class="alert-panel alert-panel--warn" hidden>
+      <p><strong>当前无法在线报名</strong>（报名已截止或名额已满）。如需咨询请返回首页查看联系方式。</p>
+      <p><a class="btn btn-secondary" href="index.html">返回首页</a></p>
+    </div>
+
+    <div id="register-demo-banner" class="alert-panel alert-panel--warn" hidden>
+      <p><strong>演示提交已开启</strong>（<code>allowDemoSubmit: true</code>）：不会发送真实邮件，仅用于本地体验报名与成功页。正式上线前请在 <code>js/email-config.js</code> 中改为 <code>false</code> 并配置 EmailJS。</p>
+    </div>
+
+    <div id="emailjs-config-hint" class="alert-panel alert-panel--info" hidden>
+      <p><strong>开发者提示：</strong>尚未配置 EmailJS。请编辑 <code>js/email-config.js</code>，填入 Public Key、Service ID 与两个模板 ID 后即可真实发信。</p>
+    </div>
+
+    <div id="form-error-top" class="alert-panel alert-panel--error" role="alert" hidden></div>
+
+    <form id="register-form" class="register-form" novalidate hidden>
+      <div class="form-section">
+        <h2 class="form-section-title">基本信息</h2>
+
+        <div class="form-field">
+          <label class="form-label" for="field-name">姓名 <span class="req">*</span></label>
+          <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required maxlength="40" />
+          <p class="field-error" id="err-name" hidden role="status"></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-id-card">身份证号 <span class="req">*</span></label>
+          <input class="form-input" type="text" id="field-id-card" name="id_card" inputmode="numeric" autocomplete="off" maxlength="18" placeholder="18 位二代身份证号码" />
+          <p class="form-hint">用于学员自助查询核对；本站不向第三方传输，管理员邮件中含完整证件号以便录入腾讯表格。</p>
+          <p class="field-error" id="err-id-card" hidden role="status"></p>
+        </div>
+
+        <div class="form-field-group">
+          <div class="form-field">
+            <label class="form-label" for="field-phone">手机号 <span class="req">*</span></label>
+            <input class="form-input" type="tel" id="field-phone" name="phone" autocomplete="tel" maxlength="11" placeholder="11 位手机号" />
+            <p class="field-error" id="err-phone" hidden role="status"></p>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="field-wechat">微信号 <span class="req">*</span></label>
+            <input class="form-input" type="text" id="field-wechat" name="wechat" autocomplete="nickname" maxlength="40" />
+            <p class="field-error" id="err-wechat" hidden role="status"></p>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <div class="form-field">
+            <label class="form-label" for="field-age">年龄 <span class="req">*</span></label>
+            <input class="form-input" type="number" id="field-age" name="age" inputmode="numeric" min="16" max="120" placeholder="周岁，须 ≥16" />
+            <p class="field-error" id="err-age" hidden role="status"></p>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="field-email">电子邮箱 <span class="req">*</span></label>
+            <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" maxlength="80" placeholder="用于接收确认邮件" />
+            <p class="field-error" id="err-email" hidden role="status"></p>
+          </div>
+        </div>
+
+        <fieldset class="form-field form-field--radios">
+          <legend class="form-label">性别 <span class="req">*</span></legend>
+          <div class="radio-row">
+            <label class="radio-label"><input type="radio" name="gender" value="男" /> 男</label>
+            <label class="radio-label"><input type="radio" name="gender" value="女" /> 女</label>
+            <label class="radio-label"><input type="radio" name="gender" value="不便填写" /> 不便填写</label>
+          </div>
+          <p class="field-error" id="err-gender" hidden role="status"></p>
+        </fieldset>
+
+        <div class="form-field">
+          <label class="form-label" for="field-city">所在城市 <span class="req">*</span></label>
+          <input class="form-input" type="text" id="field-city" name="city" autocomplete="address-level2" maxlength="40" placeholder="例如：深圳市" />
+          <p class="field-error" id="err-city" hidden role="status"></p>
+        </div>
+
+        <fieldset class="form-field form-field--radios">
+          <legend class="form-label">是否有绘画基础 <span class="req">*</span></legend>
+          <div class="radio-row">
+            <label class="radio-label"><input type="radio" name="art_base" value="有基础" /> 有基础</label>
+            <label class="radio-label"><input type="radio" name="art_base" value="无基础" /> 无基础</label>
+          </div>
+          <p class="field-error" id="err-art-base" hidden role="status"></p>
+        </fieldset>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section-title">健康与知情声明</h2>
+        <p class="form-hint">以下为必填项，请逐项勾选确认。</p>
+        <div class="checkbox-stack">
+          <label class="check-label">
+            <input type="checkbox" id="health-family" name="health_family" />
+            本人已征得家属同意参加本次活动。
+          </label>
+          <label class="check-label">
+            <input type="checkbox" id="health-body" name="health_body" />
+            本人确认身体健康状况适合参与课程安排（若有慢性疾病已如实评估）。
+          </label>
+          <label class="check-label">
+            <input type="checkbox" id="health-rules" name="health_rules" />
+            本人已阅读并知晓活动规则（含全程参与、养机场、茹素等）。
+          </label>
+        </div>
+        <p class="field-error" id="err-health" hidden role="status"></p>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" id="btn-submit" class="btn btn-primary">提交报名</button>
+        <a class="btn btn-secondary" href="index.html">返回首页</a>
+      </div>
+
+      <aside class="form-aside-tencent" aria-label="数据归档说明">
+        <h3 class="form-aside-title">数据归档</h3>
+        <p><strong>不注册国外服务</strong>：保留 EmailJS 通知邮件即可；管理员在 <a href="admin.html">管理后台</a> 将多行 TSV 粘贴后<strong>一键下载 CSV</strong>，再在腾讯表格使用<strong>文件 → 导入</strong>合并，详见后台说明。</p>
+        <p>可选：在 <code>js/sync-config.js</code> 中配置 Supabase 实现浏览器自动入库（境外服务），详见 <code>docs/supabase-autosync.md</code>。</p>
+      </aside>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <p>唐卡传承公益体验课 · 东方字礼文化</p>
+    <p>提交可走 EmailJS；国内台账推荐管理后台导出 CSV 后导入腾讯表格。</p>
+  </footer>
+
+  <script src="js/site.js"></script>
+  <script src="js/tencent-docs-sync.js"></script>
+  <script src="js/email-config.js"></script>
+  <script src="js/sync-config.js"></script>
+  <script src="js/registration-sync.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" crossorigin="anonymous"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

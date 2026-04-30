@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="唐卡课学员报名状态自助查询" />
+  <title>学员查询 · 唐卡传承公益体验课</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="site-title">唐卡传承公益体验课</p>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html">首页</a>
+        <a href="register.html">课程报名</a>
+        <a href="query.html" aria-current="page">学员查询</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="main-wrap main-wrap--form">
+    <header class="form-page-header">
+      <h1 class="form-page-title">学员查询</h1>
+      <p class="form-page-lead">请输入报名时登记的<strong>姓名</strong>与<strong>身份证后 6 位</strong>（仅数字）。数据来自本站 <code>data/students.json</code>，由管理员从腾讯表格整理后更新。</p>
+      <p class="query-demo-hint">演示数据：姓名「<strong>示例学员</strong>」，后六位「<strong>010234</strong>」。</p>
+    </header>
+
+    <form id="query-form" class="register-form" novalidate>
+      <div class="form-section">
+        <h2 class="form-section-title">查询条件</h2>
+        <div class="form-field">
+          <label class="form-label" for="q-name">姓名</label>
+          <input class="form-input" type="text" id="q-name" name="name" autocomplete="name" maxlength="40" />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="q-last6">身份证后 6 位</label>
+          <input class="form-input" type="text" id="q-last6" name="id_last6" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6 位数字" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" id="q-submit" class="btn btn-primary">查询</button>
+        <a class="btn btn-secondary" href="index.html">返回首页</a>
+      </div>
+    </form>
+
+    <div id="query-error" class="alert-panel alert-panel--error" role="alert" hidden></div>
+
+    <section id="query-empty" class="result-card result-card--muted" hidden>
+      <h2 class="result-card-title">未找到记录</h2>
+      <p>请核对姓名与后六位是否一致；若刚完成报名，可能尚未录入数据，请稍后再查或联系工作人员。</p>
+    </section>
+
+    <section id="query-results" class="result-stack" hidden>
+      <h2 class="section-title">查询结果</h2>
+      <div class="result-card">
+        <div class="result-head">
+          <span class="result-name" id="res-name">—</span>
+          <span class="status-pill" id="res-status">—</span>
+        </div>
+        <dl class="result-dl">
+          <div class="result-dl-row">
+            <dt>本期课程</dt>
+            <dd id="res-current-course">—</dd>
+          </div>
+          <div class="result-dl-row">
+            <dt>历史参课次数</dt>
+            <dd><span id="res-count">0</span> 期</dd>
+          </div>
+          <div class="result-dl-row result-dl-row--block">
+            <dt>历史参课记录</dt>
+            <dd id="res-history">—</dd>
+          </div>
+          <div class="result-dl-row">
+            <dt>登记手机</dt>
+            <dd id="res-phone">—</dd>
+          </div>
+          <div class="result-dl-row">
+            <dt>微信号</dt>
+            <dd id="res-wechat">—</dd>
+          </div>
+        </dl>
+        <p class="result-footnote">身份证完整号码与哈希不在此展示；如需更正资料请联系管理员。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>唐卡传承公益体验课 · 东方字礼文化</p>
+  </footer>
+
+  <script src="js/query.js"></script>
+</body>
+</html>

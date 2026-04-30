@@ -1,0 +1,9 @@
+# 密钥与本地环境（勿提交）
+server/.env
+腾讯文档接口密码.txt
+**/node_modules/
+
+.vercel
+.DS_Store
+Thumbs.db
+*.log

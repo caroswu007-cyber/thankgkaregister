@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>管理后台 · 唐卡报名</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="site-title">唐卡传承公益体验课</p>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="index.html">首页</a>
+        <a href="register.html">课程报名</a>
+        <a href="query.html">学员查询</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="main-wrap admin-wrap">
+    <h1 class="form-page-title admin-page-title">管理后台</h1>
+    <p class="form-page-lead admin-lead">名额与报名开关写入浏览器本地（localStorage）；学员名单以 <code>data/students.json</code> 为准。纯前端口令仅防误闯，请勿依赖其作为强安全边界。</p>
+
+    <section id="admin-login" class="admin-card">
+      <h2 class="admin-card-title">登录</h2>
+      <p id="adm-login-error" class="field-error adm-login-error" hidden role="alert"></p>
+      <form id="admin-login-form" class="admin-login-form">
+        <label class="form-label" for="adm-password">管理口令</label>
+        <input class="form-input" type="password" id="adm-password" name="password" autocomplete="current-password" />
+        <div class="form-actions admin-login-actions">
+          <button type="submit" class="btn btn-primary">进入</button>
+        </div>
+      </form>
+      <p class="form-hint">默认口令见 <code>js/admin-config.js</code>，部署后请立即修改。</p>
+    </section>
+
+    <div id="admin-dashboard" hidden>
+      <div class="admin-toolbar">
+        <span class="admin-badge">已登录</span>
+        <button type="button" id="adm-logout" class="btn btn-secondary">退出</button>
+      </div>
+
+      <div class="admin-grid">
+        <section class="admin-card">
+          <h2 class="admin-card-title">名额与报名状态</h2>
+          <dl class="admin-stats">
+            <div><dt>剩余名额（本地）</dt><dd><strong id="adm-remaining">108</strong></dd></div>
+            <div><dt>报名开关</dt><dd id="adm-open">—</dd></div>
+          </dl>
+          <div class="admin-actions-row">
+            <button type="button" id="adm-btn-open" class="btn btn-secondary">开启报名</button>
+            <button type="button" id="adm-btn-close" class="btn btn-secondary">关闭报名</button>
+            <button type="button" id="adm-btn-reset-quota" class="btn btn-secondary">重置名额为 108</button>
+          </div>
+          <div class="admin-inline-set">
+            <label class="form-label" for="adm-remaining-input">手动设置剩余名额</label>
+            <div class="admin-inline-set-row">
+              <input class="form-input" type="number" id="adm-remaining-input" min="0" max="999" step="1" placeholder="0–108" />
+              <button type="button" id="adm-btn-save-remaining" class="btn btn-primary">保存</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-card">
+          <h2 class="admin-card-title">腾讯文档与学员查询数据</h2>
+          <ol class="admin-steps">
+            <li><strong>无国外注册（推荐）</strong>：邮件中复制多行 TSV → 下方「导出到腾讯表格」→ 下载 CSV → 在腾讯表格使用<strong>文件 → 导入</strong>合并到台账。适合管理员偶尔批量处理。</li>
+            <li><strong>可选</strong>：<code>js/sync-config.js</code> 中的 Supabase 为境外服务；若不需要可留空，仅走邮件 + CSV。</li>
+            <li>学员查询仍依赖 <code>data/students.json</code>；可用下方「TSV → JSON」维护后发布站点。</li>
+          </ol>
+        </section>
+      </div>
+
+      <section class="admin-card admin-card--wide">
+        <h2 class="admin-card-title">导出到腾讯表格（国内、无国外注册）</h2>
+        <p class="form-hint">将邮件里多行 <strong>TSV</strong>（每行一条报名）粘贴到下方框内，点<strong>下载 CSV</strong>。然后在<strong>腾讯文档 / 腾讯表格</strong>中通过<strong>文件 → 导入 → 本地文件</strong>（或工具栏中的「导入数据」）选择该 CSV，按向导合并到当前表格。全程使用腾讯官方能力，无需注册国外服务。</p>
+        <ol class="admin-steps">
+          <li>下载的 CSV 已带与站内一致的<strong>表头行</strong>；若表中已有表头，导入时可选择「跳过重复表头」或先导入到新子表再复制。</li>
+          <li>若用桌面 Excel 打开乱码，请优先在<strong>腾讯表格网页版</strong>直接导入 UTF-8 CSV。</li>
+        </ol>
+        <textarea id="adm-tsv-batch" class="admin-textarea" rows="10" placeholder="每行一条报名（Tab 分隔），可从多封通知邮件中逐行复制…"></textarea>
+        <div class="admin-actions-row">
+          <button type="button" id="adm-btn-download-csv" class="btn btn-primary">下载腾讯表格用 CSV</button>
+        </div>
+      </section>
+
+      <section class="admin-card admin-card--wide">
+        <h2 class="admin-card-title">TSV 行 → 学员 JSON 片段（辅助）</h2>
+        <p class="form-hint">从腾讯表格或邮件中复制<strong>一整行数据</strong>（Tab 分隔），生成可合并进 <code>students</code> 数组的对象草稿。请核对 <code>currentStatus</code>、<code>courseHistory</code> 等字段后再入库。</p>
+        <textarea id="adm-tsv-input" class="admin-textarea" rows="3" placeholder="粘贴一行 TSV…"></textarea>
+        <div class="admin-actions-row">
+          <button type="button" id="adm-btn-tsv-preview" class="btn btn-primary">生成 JSON 预览</button>
+        </div>
+        <pre id="adm-json-output" class="admin-json-out" aria-live="polite"></pre>
+      </section>
+
+      <section class="admin-card admin-card--wide">
+        <h2 class="admin-card-title">相关文件</h2>
+        <ul class="admin-file-list">
+          <li><code>data/students.json</code> — 学员查询数据源</li>
+          <li><code>js/sync-config.js</code> — Supabase / 自定义自动归档</li>
+          <li><code>js/email-config.js</code> — EmailJS</li>
+          <li><code>js/admin-config.js</code> — 本页登录口令</li>
+          <li><code>docs/supabase-autosync.md</code> — 自动写入配置说明</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>唐卡传承公益体验课 · 管理后台</p>
+  </footer>
+
+  <script src="js/site.js"></script>
+  <script src="js/tencent-docs-sync.js"></script>
+  <script src="js/admin-config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

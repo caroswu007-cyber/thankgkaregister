@@ -1,0 +1,40 @@
+{
+  "_readme": "学员自助查询：浏览器端用「姓名」+「身份证后 6 位」与 students 中 idLast6 匹配；idHash 为身份证全文 SHA-256，供管理员去重与核对，查询页不展示。更新本文件后需重新部署静态站点。",
+  "currentCourseId": "2026-04",
+  "courses": [
+    {
+      "id": "2025-10",
+      "name": "2025年10月期",
+      "date": "2025.10.01 - 10.05"
+    },
+    {
+      "id": "2026-04",
+      "name": "2026年4月期",
+      "date": "2026.04.08 - 04.12"
+    }
+  ],
+  "students": [
+    {
+      "name": "示例学员",
+      "idLast6": "010234",
+      "idHash": "e213b709a1f430a273e2ff30b092e2e1207df942238fda0111348cd6f961c257",
+      "phone": "138****1234",
+      "wechat": "shili_tangka",
+      "currentCourseId": "2026-04",
+      "currentStatus": "confirmed",
+      "courseHistory": ["2026-04"],
+      "courseCount": 1
+    },
+    {
+      "name": "李同修",
+      "idLast6": "123456",
+      "idHash": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "phone": "159****8899",
+      "wechat": "lixiuxiu",
+      "currentCourseId": "2026-04",
+      "currentStatus": "waitlist",
+      "courseHistory": ["2025-10"],
+      "courseCount": 1
+    }
+  ]
+}

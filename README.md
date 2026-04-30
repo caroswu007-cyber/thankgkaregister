@@ -32,10 +32,11 @@ git push -u origin main
 
 ## 腾讯推送代理 `server/`
 
-`server/` 为本地/自建机上的 **Node 服务**，用于调用腾讯文档 OpenAPI；**不是** Vercel 默认一键部署的 Serverless 形态。若要把 `/append` 也上云，需单独部署到支持长时 Node 或云函数的环境，并在前端 `tencentProxyUrl` 填写公网 HTTPS 地址。详见 `docs/tencent-server-push.md`。
+`server/` 为本地/自建机上的 **Node 服务**，用于调用腾讯文档 OpenAPI（`POST /append` 写入、`POST /query` 学员查询）；**不是** Vercel 默认一键部署的 Serverless 形态。需单独部署到公网 HTTPS，并在前端 `tencentProxyUrl` 填写 `…/append`；查询页会自动使用同源 `…/query`（见 `docs/tencent-server-push.md`、`js/query-config.js`）。未部署代理时，学员查询仍使用 `data/students.json`。
 
 ## 文档
 
 - `进度说明.md`、`开发计划.md` — 项目说明  
 - `docs/supabase-autosync.md` — Supabase 可选同步  
+- `docs/emailjs-setup.md` — EmailJS 双邮件（报名者 + 管理员）  
 - `docs/tencent-server-push.md` — 腾讯智能表服务端推送  

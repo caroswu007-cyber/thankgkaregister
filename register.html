@@ -144,6 +144,7 @@
       <aside class="form-aside-tencent" aria-label="数据归档说明">
         <h3 class="form-aside-title">数据归档</h3>
         <p><strong>不注册国外服务</strong>：保留 EmailJS 通知邮件即可；管理员在 <a href="admin.html">管理后台</a> 将多行 TSV 粘贴后<strong>一键下载 CSV</strong>，再在腾讯表格使用<strong>文件 → 导入</strong>合并，详见后台说明。</p>
+        <p>自动发信：在 <code>js/email-config.js</code> 配置 EmailJS 后提交即发送确认邮件与管理员工单；步骤见 <a href="docs/emailjs-setup.md">docs/emailjs-setup.md</a>。</p>
         <p>可选：在 <code>js/sync-config.js</code> 中配置 Supabase 实现浏览器自动入库（境外服务），详见 <code>docs/supabase-autosync.md</code>。</p>
       </aside>
     </form>

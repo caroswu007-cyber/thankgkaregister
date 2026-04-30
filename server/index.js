@@ -1,8 +1,11 @@
 /**
- * 腾讯文档智能表 — 报名追加代理
- * POST /append 接收与前端 registration-sync 一致的 JSON，转换为智能表 addRecords 并调用 OpenAPI。
+ * 腾讯文档智能表 — 报名追加 + 学员查询代理
+ *
+ * - POST /append — add_records
+ * - POST /query — get_records 分页拉取后按姓名+身份证后 6 位匹配（与 query 页一致）
  *
  * 文档：https://docs.qq.com/open/document/app/openapi/v2/smartsheet/record/add_records.html
+ *       https://docs.qq.com/open/document/app/openapi/v2/smartsheet/record/get_records.html
  */
 require("dotenv").config();
 const express = require("express");
@@ -17,6 +20,13 @@ const SHEET_ID = process.env.TENCENT_SHEET_ID || "";
 const PORT = parseInt(process.env.PORT || "8787", 10);
 /** 默认 0.0.0.0，本机可用 127.0.0.1 / localhost；局域网其它设备用本机 IP */
 const HOST = process.env.HOST || "0.0.0.0";
+
+/** 查询结果「本期课程」展示行（智能表报名表无单独课程维度时的固定文案） */
+const QUERY_CURRENT_COURSE_LINE =
+  process.env.QUERY_CURRENT_COURSE_LINE ||
+  "唐卡传承公益体验课（2026年4月8日 — 4月12日 · 以腾讯文档登记表为准）";
+
+const GET_RECORDS_PAGE_LIMIT = 100;
 
 /** 智能表列标题须与站内 js/tencent-docs-sync.js 中 SHEET_HEADERS 完全一致；列类型建议均为「文本」以便统一写入 */
 function textCell(s) {
@@ -59,13 +69,8 @@ function assertConfig() {
   return miss;
 }
 
-async function appendToSmartsheet(values) {
+async function tencentSmartsheetPost(payload) {
   const url = `https://docs.qq.com/openapi/smartbook/v2/files/${encodeURIComponent(FILE_ID)}/sheets/${encodeURIComponent(SHEET_ID)}`;
-  const payload = {
-    addRecords: {
-      records: [{ values }],
-    },
-  };
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -92,6 +97,76 @@ async function appendToSmartsheet(values) {
   return data;
 }
 
+function appendToSmartsheet(values) {
+  return tencentSmartsheetPost({
+    addRecords: {
+      records: [{ values }],
+    },
+  });
+}
+
+/** 从智能表单元格取值（文本列为 [{type,text}]） */
+function cellText(values, title) {
+  const v = values[title];
+  if (v === undefined || v === null) return "";
+  if (typeof v === "string") return v.trim();
+  if (typeof v === "number") return String(v);
+  if (Array.isArray(v)) {
+    if (!v.length) return "";
+    const x = v[0];
+    if (x && x.type === "text" && x.text != null) {
+      return String(x.text).replace(/\r|\n/g, " ").trim();
+    }
+    if (typeof x === "object" && x.text != null) return String(x.text).trim();
+  }
+  return String(v);
+}
+
+function idLast6FromCardDigits(idRaw) {
+  const d = String(idRaw || "").replace(/\D/g, "");
+  return d.length >= 6 ? d.slice(-6) : d;
+}
+
+function maskPhone(p) {
+  const s = String(p || "").replace(/\s/g, "");
+  if (/^1\d{10}$/.test(s)) return s.slice(0, 3) + "****" + s.slice(-4);
+  if (s.length >= 7) return s.slice(0, 2) + "****" + s.slice(-2);
+  return s || "—";
+}
+
+async function fetchAllRecordsTencent() {
+  const all = [];
+  let offset = 0;
+  for (;;) {
+    const data = await tencentSmartsheetPost({
+      getRecords: {
+        offset,
+        limit: GET_RECORDS_PAGE_LIMIT,
+      },
+    });
+    const block = data.data && data.data.getRecords;
+    if (!block) break;
+    const recs = block.records || [];
+    for (let i = 0; i < recs.length; i++) all.push(recs[i]);
+    if (!block.hasMore) break;
+    const next =
+      block.next != null ? block.next : offset + recs.length;
+    offset = next;
+    if (recs.length === 0) break;
+    if (all.length > 20000) {
+      throw new Error("记录行数过多，请缩小子表或联系管理员");
+    }
+  }
+  return all;
+}
+
+function rowMatchesQuery(rec, nameNorm, last6) {
+  const values = rec.values || {};
+  const rowName = String(cellText(values, "姓名")).trim();
+  const rowLast6 = idLast6FromCardDigits(cellText(values, "身份证号"));
+  return rowName === nameNorm && rowLast6 === last6;
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "256kb" }));
@@ -102,7 +177,8 @@ app.get("/", (_req, res) => {
       "<p>服务已启动。</p>" +
       "<ul>" +
       "<li><a href=\"/health\">/health</a> — 检查配置</li>" +
-      "<li>POST <code>/append</code> — 报名表写入智能表（由站点调用）</li>" +
+      "<li>POST <code>/append</code> — 报名表写入智能表</li>" +
+      "<li>POST <code>/query</code> — 学员查询（姓名 + 身份证后 6 位）</li>" +
       "</ul>" +
       "<p>若本页能打开但外网站点调不通，需把本服务部署到公网 HTTPS，并在 <code>js/sync-config.js</code> 填写 <code>tencentProxyUrl</code>。</p>"
   );
@@ -153,6 +229,75 @@ app.post("/append", async (req, res) => {
   }
 });
 
+app.post("/query", async (req, res) => {
+  try {
+    if (WEBHOOK_SECRET) {
+      const got = req.headers["x-webhook-secret"] || "";
+      if (got !== WEBHOOK_SECRET) {
+        return res.status(401).json({ ok: false, error: "invalid X-Webhook-Secret" });
+      }
+    }
+
+    const miss = assertConfig();
+    if (miss.length) {
+      return res.status(503).json({
+        ok: false,
+        error: "服务端未配置腾讯环境变量",
+        missingEnv: miss,
+      });
+    }
+
+    const body = req.body || {};
+    const nameNorm = String(body.name || "").trim();
+    const last6 = String(body.id_last6 || "").replace(/\D/g, "");
+    if (!nameNorm) {
+      return res.status(400).json({ ok: false, error: "缺少 name" });
+    }
+    if (last6.length !== 6) {
+      return res.status(400).json({ ok: false, error: "id_last6 须为 6 位数字" });
+    }
+
+    const records = await fetchAllRecordsTencent();
+    const matches = [];
+    for (let i = 0; i < records.length; i++) {
+      if (rowMatchesQuery(records[i], nameNorm, last6)) matches.push(records[i]);
+    }
+
+    if (matches.length === 0) {
+      return res.json({ ok: true, found: false });
+    }
+    if (matches.length > 1) {
+      return res.status(409).json({
+        ok: false,
+        error: "ambiguous",
+        message: "存在多条匹配记录，请联系工作人员核实。",
+      });
+    }
+
+    const values = matches[0].values || {};
+    return res.json({
+      ok: true,
+      found: true,
+      source: "tencent_smartsheet",
+      statusDisplay: "已在腾讯文档登记",
+      currentCourseLine: QUERY_CURRENT_COURSE_LINE,
+      student: {
+        name: String(cellText(values, "姓名")).trim(),
+        phone: maskPhone(cellText(values, "手机号")),
+        wechat: cellText(values, "微信号") || "—",
+        submittedAt: cellText(values, "提交时间") || "",
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(502).json({
+      ok: false,
+      error: String(e.message || e),
+      tencent: e.tencent || undefined,
+    });
+  }
+});
+
 app.listen(PORT, HOST, () => {
   console.log(
     "tangka-tencent-append listening on http://127.0.0.1:" +
@@ -164,4 +309,6 @@ app.listen(PORT, HOST, () => {
   console.log("  GET  /       说明页");
   console.log("  GET  /health 配置检查");
   console.log("  POST /append 写入智能表");
+  console.log("  POST /query  学员查询");
 });
+

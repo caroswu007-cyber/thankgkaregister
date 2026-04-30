@@ -55,11 +55,14 @@ npm start
 - [http://127.0.0.1:8787/](http://127.0.0.1:8787/) — 简要说明页  
 - [http://127.0.0.1:8787/health](http://127.0.0.1:8787/health) — JSON 配置检查  
 
-**接口**：`POST /append` — 请求体为 JSON，字段与前端 `registration-sync.js` 的 `buildPayload` 一致；请求头 `X-Webhook-Secret` 须与 `.env` 中 `WEBHOOK_SECRET` 一致（未设置 `WEBHOOK_SECRET` 时不校验，不推荐生产环境）。
+**接口**：
+
+- `POST /append` — 请求体为 JSON，字段与前端 `registration-sync.js` 的 `buildPayload` 一致；请求头 `X-Webhook-Secret` 须与 `.env` 中 `WEBHOOK_SECRET` 一致（未设置 `WEBHOOK_SECRET` 时不校验，不推荐生产环境）。
+- `POST /query` — 学员查询：请求体 JSON `{ "name": "姓名", "id_last6": "123456" }`（后 6 位仅数字）。服务端调用 [查询记录](https://docs.qq.com/open/document/app/openapi/v2/smartsheet/record/get_records.html) 分页拉取当前子表全部行，在内存中按 **姓名** 与 **身份证号列取后 6 位** 匹配（与报名表列名一致）。需应用具备 `scope.smartsheet` 等读权限。可选环境变量 **`QUERY_CURRENT_COURSE_LINE`** 用于返回给前端的「本期课程」展示句（见 `server/.env.example`）。
 
 若静态站点托管在公网，浏览器 **无法** 直接访问你电脑上的 `127.0.0.1`；需把本服务部署到公网 HTTPS，并在 `js/sync-config.js` 填写 `tencentProxyUrl`。
 
-将服务暴露为 **HTTPS**（如 Nginx 反代、腾讯云 API 网关、云函数 HTTP 触发等），记下完整 URL，例如 `https://api.example.com/append`。
+将服务暴露为 **HTTPS**（如 Nginx 反代、腾讯云 API 网关、云函数 HTTP 触发等），记下完整 URL，例如 `https://api.example.com/append`（查询页会自动将 `…/append` 换为 `…/query`，也可在 `js/query-config.js` 单独写 `tencentQueryUrl`）。
 
 ## 4. 前端配置
 
@@ -67,6 +70,8 @@ npm start
 
 - `tencentProxyUrl`：上一步的 `https://.../append`（无尾部斜杠也可）。
 - `tencentProxySecret`：与 `WEBHOOK_SECRET` 相同。
+
+**学员查询（腾讯源）**：`query.html` 已引入 `js/query-config.js`。若已配置 `tencentProxyUrl`，查询页会 **自动** 请求同源 `…/query`，无需再填（除非代理与报名不同域名，此时在 `query-config.js` 填写 `tencentQueryUrl`）。密钥默认复用 `tencentProxySecret`，也可单独设 `tencentQuerySecret`。未配置腾讯代理时，仍使用 `data/students.json`。
 
 保存后重新部署静态站点。提交报名表时，会 **优先** 调用腾讯代理；未配置时仍可使用 `customPostUrl`、Supabase 或仅邮件/导出 CSV。
 

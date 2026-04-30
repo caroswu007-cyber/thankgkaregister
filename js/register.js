@@ -300,17 +300,17 @@
         }
       }
 
-      function sendEmailsIfNeeded(hash) {
+      function formatSubmitError(err) {
+        if (!err) return "未知错误";
+        if (typeof err.text === "string" && err.text) return err.text;
+        if (err.status && err.text)
+          return "HTTP " + err.status + " " + err.text;
+        if (err.message) return String(err.message);
+        return String(err);
+      }
+
+      function sendApplicantEmail(hash) {
         if (!isEmailConfigured()) return Promise.resolve();
-        var sheetRow = td.buildPasteRow(
-          Object.assign({}, data, { idSha256: hash })
-        );
-        var headersLine = td.buildHeadersLine();
-        var adminPlain = buildAdminPlain(cfg, data, hash);
-        var phoneTail =
-          data.phone.length >= 4
-            ? data.phone.slice(-4)
-            : data.phone;
         var applicantParams = {
           to_email: data.email,
           user_name: data.name,
@@ -321,6 +321,23 @@
           tips_short:
             "请查收本邮件；可同时留意手机短信与微信「升莲」好友通知（若有）。",
         };
+        return emailjs.send(
+          cfg.serviceId,
+          cfg.templateApplicant,
+          applicantParams
+        );
+      }
+
+      function sendAdminEmail(hash) {
+        if (!isEmailConfigured()) return Promise.resolve();
+        var sheetRow = td.buildPasteRow(
+          Object.assign({}, data, { idSha256: hash })
+        );
+        var headersLine = td.buildHeadersLine();
+        var adminPlain = buildAdminPlain(cfg, data, hash);
+        var phoneTail =
+          data.phone.length >= 4 ? data.phone.slice(-4) : data.phone;
+        var adminNotify = String(cfg.adminNotifyEmail || "").trim();
         var adminParams = {
           admin_subject_hint: data.name + " · 尾号" + phoneTail,
           sheet_headers_line: headersLine,
@@ -328,14 +345,24 @@
           admin_plain: adminPlain,
           reply_to: data.email,
         };
-        return emailjs
-          .send(cfg.serviceId, cfg.templateApplicant, applicantParams)
+        if (adminNotify) {
+          adminParams.to_email = adminNotify;
+        }
+        return emailjs.send(cfg.serviceId, cfg.templateAdmin, adminParams);
+      }
+
+      function sendEmailsSequentially(hash) {
+        if (!isEmailConfigured()) return Promise.resolve();
+        return sendApplicantEmail(hash)
+          .catch(function (e) {
+            e._tangkaStage = "applicant";
+            throw e;
+          })
           .then(function () {
-            return emailjs.send(
-              cfg.serviceId,
-              cfg.templateAdmin,
-              adminParams
-            );
+            return sendAdminEmail(hash).catch(function (e) {
+              e._tangkaStage = "admin";
+              throw e;
+            });
           });
       }
 
@@ -344,9 +371,19 @@
       sha256HexSafe(data.idCard)
         .then(function (hash) {
           if (demo) {
+            if (isEmailConfigured()) {
+              if (typeof emailjs === "undefined") {
+                return Promise.reject(
+                  new Error("已配置 EmailJS 但未加载脚本，请检查网络或 CDN。")
+                );
+              }
+              return sendEmailsSequentially(hash).then(function () {
+                finishSuccess(data);
+              });
+            }
             if (window.console && console.log) {
               console.log(
-                "[演示模式] 不发邮件。TSV 行示例：",
+                "[演示模式] 未配置 EmailJS，不发邮件。TSV 行示例：",
                 td.buildPasteRow(
                   Object.assign({}, data, { idSha256: hash })
                 )
@@ -363,7 +400,7 @@
             );
           }
           if (isEmailConfigured()) {
-            tasks.push(sendEmailsIfNeeded(hash));
+            tasks.push(sendEmailsSequentially(hash));
           }
           if (!tasks.length) {
             return Promise.reject(new Error("未配置可用的提交通道"));
@@ -373,15 +410,16 @@
           });
         })
         .catch(function (err) {
-          var msg =
-            err && err.text
-              ? String(err.text)
-              : err && err.message
-                ? err.message
-                : String(err);
+          var raw = formatSubmitError(err);
+          var msg = "提交失败：" + raw;
+          if (err && err._tangkaStage === "admin") {
+            msg =
+              "报名者确认邮件已发出，但管理员通知失败：" +
+              raw +
+              "。请检查管理员模板、收件人字段（如 {{to_email}}）及 adminNotifyEmail 配置。";
+          }
           showTopError(
-            "提交失败：" +
-              msg +
+            msg +
               "（邮件模板变量、Supabase 表字段名或 RLS 策略请对照文档检查）"
           );
         })

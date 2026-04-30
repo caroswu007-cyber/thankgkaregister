@@ -1,5 +1,5 @@
 /**
- * 学员查询：加载 data/students.json，按姓名 + 身份证后 6 位匹配
+ * 学员查询：优先腾讯文档智能表（经 server POST /query），否则 data/students.json
  */
 (function () {
   "use strict";
@@ -18,6 +18,77 @@
     var d = String(s || "").replace(/\D/g, "");
     if (d.length >= 6) return d.slice(-6);
     return d;
+  }
+
+  function resolveTencentQueryUrl() {
+    var qc = window.TangkaQueryConfig || {};
+    var u = qc.tencentQueryUrl;
+    if (u && String(u).indexOf("http") === 0) {
+      return String(u).replace(/\/$/, "");
+    }
+    var sc = window.TangkaSyncConfig || {};
+    var a = sc.tencentProxyUrl;
+    if (a && String(a).indexOf("http") === 0) {
+      var t = String(a).replace(/\/$/, "");
+      if (t.length >= 7 && t.slice(-7) === "/append") {
+        return t.slice(0, -7) + "/query";
+      }
+      return t + "/query";
+    }
+    return "";
+  }
+
+  function queryWebhookSecret() {
+    var qc = window.TangkaQueryConfig || {};
+    if (qc.tencentQuerySecret) return qc.tencentQuerySecret;
+    var sc = window.TangkaSyncConfig || {};
+    return sc.tencentProxySecret || "";
+  }
+
+  function fetchTencentQuery(baseUrl, name, last6) {
+    return fetch(baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Webhook-Secret": queryWebhookSecret(),
+      },
+      body: JSON.stringify({ name: name, id_last6: last6 }),
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = {};
+        try {
+          j = JSON.parse(t || "{}");
+        } catch (ignore) {}
+        if (r.status === 409) {
+          var err = new Error(j.message || "存在多条匹配记录，请联系工作人员核实。");
+          err.code = "ambiguous";
+          throw err;
+        }
+        if (!r.ok) {
+          throw new Error(j.error || t || "查询接口 HTTP " + r.status);
+        }
+        return j;
+      });
+    });
+  }
+
+  function renderTencentResults(api) {
+    var s = api.student || {};
+    $("res-name").textContent = s.name || "—";
+    $("res-status").textContent = api.statusDisplay || "已在腾讯文档登记";
+    $("res-count").textContent = "—";
+    var hist = "以腾讯文档登记表为准";
+    if (s.submittedAt) {
+      hist = "提交时间：" + s.submittedAt;
+    }
+    $("res-history").textContent = hist;
+    $("res-phone").textContent = s.phone || "—";
+    $("res-wechat").textContent = s.wechat || "—";
+    $("res-current-course").textContent = api.currentCourseLine || "—";
+
+    setVisible("query-results", true);
+    setVisible("query-empty", false);
+    setVisible("query-error", false);
   }
 
   function statusLabel(code) {
@@ -69,7 +140,11 @@
 
     $("res-name").textContent = student.name;
     $("res-status").textContent = statusLabel(student.currentStatus);
-    $("res-count").textContent = String(student.courseCount != null ? student.courseCount : (student.courseHistory || []).length);
+    $("res-count").textContent = String(
+      student.courseCount != null
+        ? student.courseCount
+        : (student.courseHistory || []).length
+    );
     $("res-history").textContent = formatHistoryList(courses, student.courseHistory || []);
     $("res-phone").textContent = student.phone || "—";
     $("res-wechat").textContent = student.wechat || "—";
@@ -133,26 +208,48 @@
         btn.textContent = "查询中…";
       }
 
-      fetch(DATA_URL, { cache: "no-store" })
-        .then(function (r) {
-          if (!r.ok) throw new Error("无法加载数据文件（HTTP " + r.status + "）");
-          return r.json();
-        })
-        .then(function (data) {
-          var matches = findMatches(data, name, last6);
-          if (matches.length === 0) {
-            showNotFound();
-          } else if (matches.length > 1) {
-            showError("存在多条匹配记录，请联系工作人员核实。");
-          } else {
-            renderResults(data, matches[0]);
+      var tencentBase = resolveTencentQueryUrl();
+      var chain;
+
+      if (tencentBase) {
+        chain = fetchTencentQuery(tencentBase, name, last6).then(function (api) {
+          if (!api.ok) {
+            throw new Error(api.error || "查询失败");
           }
-        })
+          if (!api.found) {
+            showNotFound();
+            return;
+          }
+          renderTencentResults(api);
+        });
+      } else {
+        chain = fetch(DATA_URL, { cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("无法加载数据文件（HTTP " + r.status + "）");
+            return r.json();
+          })
+          .then(function (data) {
+            var matches = findMatches(data, name, last6);
+            if (matches.length === 0) {
+              showNotFound();
+            } else if (matches.length > 1) {
+              showError("存在多条匹配记录，请联系工作人员核实。");
+            } else {
+              renderResults(data, matches[0]);
+            }
+          });
+      }
+
+      chain
         .catch(function (err) {
           var hint =
             err && err.message
               ? err.message
               : "网络或文件读取失败。若使用本地文件打开，请用本地静态服务（如 npx serve）访问站点。";
+          if (hint.indexOf("Failed to fetch") !== -1) {
+            hint =
+              "无法连接查询服务。请确认已部署 server 并填写 tencentProxyUrl（与 append 同源 /query），或暂时留空以使用 data/students.json。";
+          }
           showError(hint);
         })
         .finally(function () {

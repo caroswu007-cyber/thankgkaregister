@@ -1,0 +1,8 @@
+{
+  "name": "tangka-register-site",
+  "private": true,
+  "description": "静态报名站；Vercel 构建时注入 Supabase（见 scripts/inject-sync-config.js）",
+  "scripts": {
+    "build": "node scripts/inject-sync-config.js"
+  }
+}

@@ -46,6 +46,20 @@
     };
   }
 
+  function supabaseRestHeaders(apiKey) {
+    var k = String(apiKey || "");
+    var h = {
+      "Content-Type": "application/json",
+      apikey: k,
+      Prefer: "return=minimal",
+    };
+    // 旧版 anon 为 JWT（eyJ…）；新版 Publishable 为 sb_publishable_…，勿作 Bearer
+    if (k.indexOf("eyJ") === 0) {
+      h.Authorization = "Bearer " + k;
+    }
+    return h;
+  }
+
   function submitSupabase(row) {
     var c = cfg();
     var url = c.supabaseUrl.replace(/\/$/, "");
@@ -54,12 +68,7 @@
     }
     return fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: c.supabaseAnonKey,
-        Authorization: "Bearer " + c.supabaseAnonKey,
-        Prefer: "return=minimal",
-      },
+      headers: supabaseRestHeaders(c.supabaseAnonKey),
       body: JSON.stringify(row),
     }).then(function (r) {
       if (r.ok) return {};

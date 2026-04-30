@@ -1,13 +1,18 @@
 /**
  * 报名自动归档（减少手工粘贴腾讯表格）
  *
- * 推荐：Supabase 免费项目 — 浏览器直接把一行写入数据库，无需自建服务器。
- * 填好下面三项后，报名表会随提交一并写入；可不依赖管理员逐条复制邮件里的 TSV。
+ * Supabase：先在 SQL Editor 执行 docs/supabase-autosync.md 里的建表 + RLS。
  *
+ * 二选一配置方式：
+ * ① Vercel：在 Project → Environment Variables 设置 SUPABASE_URL、SUPABASE_ANON_KEY，
+ *    构建时由 scripts/inject-sync-config.js 写入本文件（勿把 anon key 提交进公开仓库时推荐）。
+ * ② 本地 / 任意托管：直接把下方 supabaseUrl、supabaseAnonKey 填字符串后部署。
+ *
+ * anon key 可出现在前端时，务必只给 anon 配 insert 策略、勿给 anon select。
  * 留空则不同步（仍可走 EmailJS / 演示模式）。
  */
 window.TangkaSyncConfig = {
-  /** 例：https://xxxx.supabase.co/rest/v1/registrations */
+  /** 例：https://xxxx.supabase.co/rest/v1/registrations 或 https://xxxx.supabase.co（代码会自动补全路径） */
   supabaseUrl: "",
 
   /** Project Settings → API → anon public */

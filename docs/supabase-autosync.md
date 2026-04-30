@@ -7,11 +7,22 @@
 1. 打开 [supabase.com](https://supabase.com) 新建项目（免费层即可）。
 2. 左侧 **SQL Editor**，新建查询，粘贴并执行下方 **建表 + RLS** 脚本。
 3. **Project Settings → API**，复制 **Project URL** 与 **anon public** key。
-4. 编辑本站 `js/sync-config.js`：
-   - `supabaseUrl` 填 `https://你的项目.supabase.co`（不要末尾斜杠也可）
-   - `supabaseAnonKey` 填 anon key
-   - `supabaseTable` 保持 `registrations`（若你改了表名则同步修改）
+4. 配置前端凭证（二选一）：
+   - **手写**：编辑 `js/sync-config.js` 中的 `supabaseUrl`、`supabaseAnonKey`。
+   - **Vercel**：跳过手写，改按下方 **「在 Vercel 用环境变量」** 设置 `SUPABASE_URL` 与 `SUPABASE_ANON_KEY`。
 5. （可选）仍可同时配置 EmailJS：提交时 **自动写库 + 发邮件** 并行执行。
+
+### 在 Vercel 用环境变量（推荐，避免把 anon key 写进 Git）
+
+仓库已包含 `package.json` 的 `npm run build`（执行 `scripts/inject-sync-config.js`）与 `vercel.json` 的 `buildCommand`。
+
+1. 将含上述改动的代码 **push** 到 Vercel 所连的 Git 分支。
+2. 在 Vercel 打开项目 → **Settings → Environment Variables**，新增两条（建议勾选 Production + Preview）：
+   - `SUPABASE_URL` = `https://你的项目.supabase.co`
+   - `SUPABASE_ANON_KEY` = 控制台 **Project Settings → API → anon public** 密钥  
+3. **Redeploy** 一次。部署日志里应出现 `[inject-sync-config] 已写入 Supabase…`。
+
+本地不设这两个变量时，构建脚本不会改动 `js/sync-config.js`，便于开发。
 
 ## 建表与权限（复制到 SQL Editor）
 

@@ -371,26 +371,35 @@
       sha256HexSafe(data.idCard)
         .then(function (hash) {
           if (demo) {
-            if (isEmailConfigured()) {
-              if (typeof emailjs === "undefined") {
-                return Promise.reject(
-                  new Error("已配置 EmailJS 但未加载脚本，请检查网络或 CDN。")
-                );
-              }
-              return sendEmailsSequentially(hash).then(function () {
-                finishSuccess(data);
-              });
-            }
-            if (window.console && console.log) {
-              console.log(
-                "[演示模式] 未配置 EmailJS，不发邮件。TSV 行示例：",
-                td.buildPasteRow(
-                  Object.assign({}, data, { idSha256: hash })
-                )
+            if (isEmailConfigured() && typeof emailjs === "undefined") {
+              return Promise.reject(
+                new Error("已配置 EmailJS 但未加载脚本，请检查网络或 CDN。")
               );
             }
-            finishSuccess(data);
-            return;
+            var demoTasks = [];
+            if (syncOk) {
+              demoTasks.push(
+                window.TangkaRegistrationSync.submitRegistration(data, hash)
+              );
+            }
+            if (isEmailConfigured()) {
+              demoTasks.push(sendEmailsSequentially(hash));
+            }
+            if (!demoTasks.length) {
+              if (window.console && console.log) {
+                console.log(
+                  "[演示模式] 未配置 EmailJS 与数据同步，数据未外传。TSV 行示例：",
+                  td.buildPasteRow(
+                    Object.assign({}, data, { idSha256: hash })
+                  )
+                );
+              }
+              finishSuccess(data);
+              return;
+            }
+            return Promise.all(demoTasks).then(function () {
+              finishSuccess(data);
+            });
           }
 
           var tasks = [];

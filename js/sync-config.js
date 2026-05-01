@@ -13,10 +13,11 @@
  */
 window.TangkaSyncConfig = {
   /** 例：https://xxxx.supabase.co/rest/v1/registrations 或 https://xxxx.supabase.co（代码会自动补全路径） */
-  supabaseUrl: "",
+  supabaseUrl: "https://puojpetxyxvuddbdhgsy.supabase.co",
 
   /** Project Settings → API → anon public */
-  supabaseAnonKey: "",
+  supabaseAnonKey:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1b2pwZXR4eXh2dWRkYmRoZ3N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NTIzNjIsImV4cCI6MjA5MzEyODM2Mn0.KGX0S-l1r4s_Q8XvgJdV7TK11xQb-wHxmVrg335PviI",
 
   /** 与数据库表名一致（见 docs/supabase-autosync.md） */
   supabaseTable: "registrations",

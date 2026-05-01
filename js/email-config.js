@@ -29,13 +29,13 @@ window.TangkaEmailConfig = {
   publicKey: "HEFYCnnmAttscMfp6",
 
   /** Email Service ID（电子邮件服务 ID）— 在 Email Services 中创建 Gmail 并「Create Service」后复制 */
-  serviceId: "YOUR_SERVICE_ID",
+  serviceId: "service_t9dkc84",
 
   /** 发给报名者的模板 ID */
-  templateApplicant: "YOUR_TEMPLATE_APPLICANT",
+  templateApplicant: "template_qjl4zmw",
 
   /** 发给管理员的通知模板 ID */
-  templateAdmin: "YOUR_TEMPLATE_ADMIN",
+  templateAdmin: "template_jni7nor",
 
   /**
    * 管理员通知收件邮箱（与 Account 页通知邮箱一致即可；模板 To 填 {{to_email}}）。

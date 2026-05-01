@@ -117,9 +117,11 @@
    * @param {string} idHash 身份证 SHA-256 十六进制
    */
   function submitRegistration(data, idHash) {
-    if (!isEnabled()) return Promise.resolve({ skipped: true });
-    var row = buildPayload(data, idHash);
+    if (!isEnabled()) {
+      return Promise.resolve({ skipped: true });
+    }
     var c = cfg();
+    var row = buildPayload(data, idHash);
     if (c.tencentProxyUrl && String(c.tencentProxyUrl).indexOf("http") === 0) {
       return submitTencentProxy(row);
     }

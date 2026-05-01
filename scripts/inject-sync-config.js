@@ -23,11 +23,14 @@ let s = fs.readFileSync(target, "utf8");
 
 if (url || key) {
   if (url) {
-    s = s.replace(/supabaseUrl:\s*""/m, `supabaseUrl: ${JSON.stringify(url)}`);
+    s = s.replace(
+      /supabaseUrl:\s*"[^"]*"/,
+      `supabaseUrl: ${JSON.stringify(url)}`
+    );
   }
   if (key) {
     s = s.replace(
-      /supabaseAnonKey:\s*""/m,
+      /supabaseAnonKey:\s*"[^"]*"/,
       `supabaseAnonKey: ${JSON.stringify(key)}`
     );
   }

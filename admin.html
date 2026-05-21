@@ -16,7 +16,7 @@
     <div class="header-inner">
       <p class="site-title">唐卡传承公益体验课</p>
       <nav class="site-nav" aria-label="主导航">
-        <a href="index.html">首页</a>
+        <a href="index.html">课程列表</a>
         <a href="register.html">课程报名</a>
         <a href="query.html">学员查询</a>
       </nav>
@@ -24,8 +24,10 @@
   </header>
 
   <main id="main" class="main-wrap admin-wrap admin-wrap-wide">
-    <h1 class="form-page-title admin-page-title">管理后台</h1>
-    <p class="form-page-lead admin-lead">报名总览实时同步自 Supabase 数据库；身份校验由数据库 RLS 策略完成，浏览器源码内不留口令。名额与报名开关另写入浏览器本地（localStorage）。</p>
+    <header class="page-strip admin-page-strip">
+      <h1 class="form-page-title admin-page-title">管理后台</h1>
+      <p class="form-page-lead admin-lead">报名总览实时同步自数据库；口令由服务端校验，浏览器源码内不留凭证。名额与报名开关写入浏览器本地（localStorage），与前台课程列表状态联动。</p>
+    </header>
 
     <section id="admin-login" class="admin-card">
       <h2 class="admin-card-title">登录</h2>

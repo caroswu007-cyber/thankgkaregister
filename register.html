@@ -16,25 +16,35 @@
     <div class="header-inner">
       <p class="site-title">唐卡传承公益体验课</p>
       <nav class="site-nav" aria-label="主导航">
-        <a href="index.html">首页</a>
+        <a href="index.html">课程列表</a>
         <a href="register.html" aria-current="page">课程报名</a>
         <a href="query.html">学员查询</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="main-wrap main-wrap--form">
-    <header class="form-page-header">
+  <main id="main" class="main-wrap main-wrap--form main-wrap--wide">
+    <header class="page-strip form-page-header">
       <div class="form-hero-icon" aria-hidden="true">
         <img src="images/hero-lotus.svg" alt="" width="96" height="96" class="hero-mandala hero-mandala--small" loading="lazy" />
       </div>
-      <h1 class="form-page-title">在线报名</h1>
-      <p class="form-page-lead">请如实填写以下信息。提交成功后系统将发送确认邮件；管理员将把您的资料录入<strong>腾讯表格</strong>存档。</p>
+      <h1 class="form-page-title">学员申请</h1>
+      <p class="form-page-lead">请确认课程信息并如实填写报名表。提交成功后系统将发送确认邮件至您填写的邮箱，报名信息自动归档，工作人员将按顺序审核联系。</p>
     </header>
 
+    <div class="course-confirm" aria-label="所报课程">
+      <h2 class="course-confirm-title">您正在申请</h2>
+      <dl>
+        <div><dt>课程</dt><dd>唐卡传承公益体验课（佛像绘画 · 唐卡）</dd></div>
+        <div><dt>时间</dt><dd>2026 年 4 月 8 日 — 4 月 12 日（共五天）</dd></div>
+        <div><dt>地点</dt><dd>广东 · 深圳市龙岗区横岗新园路 88 号 · 东方字礼文化美愈康养基地</dd></div>
+        <div><dt>讲师</dt><dd>赵盛华居士</dd></div>
+      </dl>
+    </div>
+
     <div id="register-closed" class="alert-panel alert-panel--warn" hidden>
-      <p><strong>当前无法在线报名</strong>（报名已截止或名额已满）。如需咨询请返回首页查看联系方式。</p>
-      <p><a class="btn btn-secondary" href="index.html">返回首页</a></p>
+      <p><strong>当前无法在线报名</strong>（报名已截止或名额已满）。如需咨询请返回课程列表查看联系方式。</p>
+      <p><a class="btn btn-secondary" href="index.html">返回课程列表</a></p>
     </div>
 
     <div id="register-demo-banner" class="alert-panel alert-panel--warn" hidden>
@@ -60,7 +70,7 @@
         <div class="form-field">
           <label class="form-label" for="field-id-card">身份证号 <span class="req">*</span></label>
           <input class="form-input" type="text" id="field-id-card" name="id_card" inputmode="numeric" autocomplete="off" maxlength="18" placeholder="18 位二代身份证号码" />
-          <p class="form-hint">用于学员自助查询核对；本站不向第三方传输，管理员邮件中含完整证件号以便录入腾讯表格。</p>
+          <p class="form-hint">用于学员自助查询核对；信息仅用于本次课程报名与联系，不向无关第三方传输。</p>
           <p class="field-error" id="err-id-card" hidden role="status"></p>
         </div>
 
@@ -118,19 +128,28 @@
 
       <div class="form-section">
         <h2 class="form-section-title">健康与知情声明</h2>
-        <p class="form-hint">以下为必填项，请逐项勾选确认。</p>
+        <div class="rules-summary" role="note">
+          <p><strong>报名前请确认您已了解：</strong></p>
+          <ul>
+            <li>报到日须满 16 周岁，且已征得家属同意。</li>
+            <li>须全程参与五天课程；课程期间手机存放养机场，全天茹素。</li>
+            <li>须遵守五戒（不杀生、不偷盗、不邪淫、不妄语、不饮酒）。</li>
+            <li>请确认身体状况适合参与；如有疑问请先咨询工作人员。</li>
+          </ul>
+        </div>
+        <p class="form-hint">请逐项勾选以下声明（均为必填）：</p>
         <div class="checkbox-stack">
           <label class="check-label">
             <input type="checkbox" id="health-family" name="health_family" />
-            本人已征得家属同意参加本次活动。
+            本人已征得家属同意参加本课程。
           </label>
           <label class="check-label">
             <input type="checkbox" id="health-body" name="health_body" />
-            本人确认身体健康状况适合参与课程安排（若有慢性疾病已如实评估）。
+            本人确认身体健康状况适合参与五天课程安排（若有慢性疾病已如实评估）。
           </label>
           <label class="check-label">
             <input type="checkbox" id="health-rules" name="health_rules" />
-            本人已阅读并知晓活动规则（含全程参与、养机场、茹素等）。
+            本人已阅读并同意课程规则（全程参与、养机场、茹素、五戒等，见课程列表页「报名前须知」）。
           </label>
         </div>
         <p class="field-error" id="err-health" hidden role="status"></p>
@@ -138,21 +157,19 @@
 
       <div class="form-actions">
         <button type="submit" id="btn-submit" class="btn btn-primary">提交报名</button>
-        <a class="btn btn-secondary" href="index.html">返回首页</a>
+        <a class="btn btn-secondary" href="index.html">返回课程列表</a>
       </div>
 
-      <aside class="form-aside-tencent" aria-label="数据归档说明">
-        <h3 class="form-aside-title">数据归档</h3>
-        <p><strong>不注册国外服务</strong>：保留 EmailJS 通知邮件即可；管理员在 <a href="admin.html">管理后台</a> 将多行 TSV 粘贴后<strong>一键下载 CSV</strong>，再在腾讯表格使用<strong>文件 → 导入</strong>合并，详见后台说明。</p>
-        <p>自动发信：在 <code>js/email-config.js</code> 配置 EmailJS 后提交即发送确认邮件与管理员工单；步骤见 <a href="docs/emailjs-setup.md">docs/emailjs-setup.md</a>。</p>
-        <p>可选：在 <code>js/sync-config.js</code> 中配置 Supabase 实现浏览器自动入库（境外服务），详见 <code>docs/supabase-autosync.md</code>。</p>
+      <aside class="form-aside-muted" aria-label="提交说明">
+        <p>提交后：系统将发送确认邮件至您的邮箱，请留意收件箱与垃圾箱。请勿重复提交同一证件报名。</p>
+        <p>报名信息自动归档；管理员可在 <a href="admin.html">管理后台</a> 查看，需要时导出 CSV 备份。如需咨询请返回 <a href="index.html">课程列表</a> 查看微信联系方式。</p>
       </aside>
     </form>
   </main>
 
   <footer class="site-footer">
     <p>唐卡传承公益体验课 · 东方字礼文化</p>
-    <p>提交可走 EmailJS；国内台账推荐管理后台导出 CSV 后导入腾讯表格。</p>
+    <p>学员申请 · 邮件确认 · 请勿重复提交</p>
   </footer>
 
   <script src="js/site.js"></script>

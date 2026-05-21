@@ -16,18 +16,18 @@
     <div class="header-inner">
       <p class="site-title">唐卡传承公益体验课</p>
       <nav class="site-nav" aria-label="主导航">
-        <a href="index.html">首页</a>
+        <a href="index.html">课程列表</a>
         <a href="register.html">课程报名</a>
         <a href="query.html" aria-current="page">学员查询</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="main-wrap main-wrap--form">
-    <header class="form-page-header">
+  <main id="main" class="main-wrap main-wrap--form main-wrap--wide">
+    <header class="page-strip form-page-header">
       <h1 class="form-page-title">学员查询</h1>
-      <p class="form-page-lead">请输入报名时登记的<strong>姓名</strong>与<strong>身份证后 6 位</strong>（仅数字）。数据来自 <code>data/students.json</code>，或（若已配置）由服务端从<strong>腾讯文档智能表</strong>实时查询与报名表相同的子表。</p>
-      <p class="query-demo-hint">演示数据：姓名「<strong>示例学员</strong>」，后六位「<strong>010234</strong>」。</p>
+      <p class="form-page-lead">请输入报名时登记的<strong>姓名</strong>与<strong>身份证后 6 位</strong>（仅数字），查询本期课程报名状态。</p>
+      <p class="query-demo-hint form-hint">演示数据：姓名「<strong>示例学员</strong>」，后六位「<strong>010234</strong>」。</p>
     </header>
 
     <form id="query-form" class="register-form" novalidate>
@@ -44,7 +44,7 @@
       </div>
       <div class="form-actions">
         <button type="submit" id="q-submit" class="btn btn-primary">查询</button>
-        <a class="btn btn-secondary" href="index.html">返回首页</a>
+        <a class="btn btn-secondary" href="index.html">返回课程列表</a>
       </div>
     </form>
 

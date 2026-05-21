@@ -40,7 +40,7 @@ window.TangkaEmailConfig = {
   /**
    * 管理员通知收件邮箱（与 Account 页通知邮箱一致即可；模板 To 填 {{to_email}}）。
    */
-  adminNotifyEmail: "caroswu007@gmail.com",
+  adminNotifyEmail: "putihuayuan2026@163.com",
 
   /** 固定课程文案（模板与代码共用） */
   courseName: "唐卡传承公益体验课",

@@ -58,29 +58,58 @@
     decrementRemaining: decrementRemaining,
     canRegister: canRegister,
 
-    /** 更新首页报名按钮与名额展示（链接或 button） */
+    /**
+     * 首页课程列表：名额、状态标签、学员申请按钮联动
+     */
     bindIndexPage: function () {
       var btn = document.getElementById("btn-register");
       var spotsEl = document.getElementById("spots-remaining");
-      if (!btn && !spotsEl) return;
+      var statusPill = document.getElementById("course-status-pill");
+      var courseItem = document.getElementById("course-item-main");
+
+      if (!btn && !spotsEl && !statusPill) return;
 
       var open = isRegistrationOpen();
       var remaining = readRemaining();
+      var canApply = open && remaining > 0;
 
       if (spotsEl) {
         spotsEl.textContent = String(remaining);
       }
 
+      if (statusPill) {
+        statusPill.className = "status-pill";
+        if (!open) {
+          statusPill.classList.add("status-pill--closed");
+          statusPill.textContent = "报名已结束";
+        } else if (remaining <= 0) {
+          statusPill.classList.add("status-pill--full");
+          statusPill.textContent = "名额已满";
+        } else if (remaining <= 10) {
+          statusPill.classList.add("status-pill--wait");
+          statusPill.textContent = "开放申请 · 名额紧张";
+        } else {
+          statusPill.classList.add("status-pill--open");
+          statusPill.textContent = "开放申请";
+        }
+      }
+
+      if (courseItem) {
+        courseItem.style.borderLeftColor = canApply
+          ? ""
+          : "var(--color-cinnabar)";
+      }
+
       if (btn) {
         var hrefRegister = "register.html";
-        if (!open || remaining <= 0) {
+        if (!canApply) {
           if (btn.tagName === "A") {
             btn.setAttribute("href", "#");
             btn.classList.add("is-disabled");
           } else {
             btn.disabled = true;
           }
-          btn.textContent = remaining <= 0 ? "名额已满" : "报名已截止";
+          btn.textContent = remaining <= 0 ? "名额已满" : "报名已结束";
           btn.setAttribute("aria-disabled", "true");
         } else {
           if (btn.tagName === "A") {
@@ -89,7 +118,7 @@
           } else {
             btn.disabled = false;
           }
-          btn.textContent = "立即报名";
+          btn.textContent = "学员申请";
           btn.removeAttribute("aria-disabled");
         }
       }

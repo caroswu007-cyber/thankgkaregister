@@ -56,40 +56,6 @@
       <span>公益传承</span>
     </section>
 
-    <section class="world-gallery" aria-labelledby="gallery-title">
-      <div class="section-heading">
-        <p class="tibetan-kicker" lang="bo">བོད་ཀྱི་རིག་གནས</p>
-        <h2 id="gallery-title" class="section-title">课程图像</h2>
-        <p>参考 Thangka World 的藏地文化叙事方式，以图片、标题和简短说明呈现课程气质。</p>
-      </div>
-      <div class="culture-grid">
-        <figure class="culture-card culture-card--large">
-          <img src="素材/01_课程介绍.png" alt="唐卡课程介绍图" width="720" height="480" loading="lazy" />
-          <figcaption>
-            <span lang="bo">ཐང་ཀའི་རི་མོ</span>
-            <strong>唐卡课程</strong>
-            <small>从线条、比例、设色开始，体验传统佛像绘画。</small>
-          </figcaption>
-        </figure>
-        <figure class="culture-card">
-          <img src="素材/02_讲师介绍.png" alt="讲师介绍图" width="360" height="360" loading="lazy" />
-          <figcaption>
-            <span lang="bo">དགེ་རྒན</span>
-            <strong>讲师传授</strong>
-            <small>赵盛华居士带领学习基础法度与绘画方法。</small>
-          </figcaption>
-        </figure>
-        <figure class="culture-card">
-          <img src="素材/03_温馨提示.png" alt="课程温馨提示图" width="360" height="360" loading="lazy" />
-          <figcaption>
-            <span lang="bo">སྒྲིག་ལམ</span>
-            <strong>清净规则</strong>
-            <small>全程参与、手机养机场、茹素与五戒要求。</small>
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-
     <section class="panel-frame rules-panel" aria-labelledby="rules-title">
       <div class="panel-frame-header">
         <p class="tibetan-kicker" lang="bo">དྲན་སྐུལ</p>
@@ -145,19 +111,6 @@
       </div>
     </section>
 
-    <section class="panel-frame course-intro-panel thangka-detail-panel" aria-labelledby="intro-title">
-      <div class="panel-frame-header">
-        <p class="tibetan-kicker" lang="bo">ཞིབ་ཕྲ</p>
-        <h2 id="intro-title" class="section-title">课程介绍</h2>
-      </div>
-      <div class="panel-frame-body">
-        <figure class="figure-block">
-          <img id="course-banner-img" src="素材/04_课程详情与二维码.png" alt="唐卡传承公益体验课详情与二维码" width="960" height="540" loading="lazy" />
-          <figcaption id="course-banner-fallback" class="figure-caption" hidden>请将课程介绍长图放入 <code>素材/course-banner.jpg</code> 后刷新页面。</figcaption>
-        </figure>
-      </div>
-    </section>
-
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
       <p class="tibetan-kicker" lang="bo">འབྲེལ་གཏུག</p>
       <h2 id="contact-title" class="section-title">联系与咨询</h2>
@@ -184,15 +137,6 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       if (window.TangkaSite) TangkaSite.bindIndexPage();
-
-      var banner = document.getElementById("course-banner-img");
-      var bannerFb = document.getElementById("course-banner-fallback");
-      if (banner && bannerFb) {
-        banner.addEventListener("error", function () {
-          banner.style.display = "none";
-          bannerFb.hidden = false;
-        });
-      }
 
       var qr = document.getElementById("qr-img");
       var qrPh = document.getElementById("qr-placeholder");

@@ -5,6 +5,7 @@ server/.env
 
 .vercel
 .vercel-key-oneuse.tmp
+public/
 .DS_Store
 Thumbs.db
 *.log

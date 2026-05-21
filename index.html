@@ -14,7 +14,13 @@
 
   <header class="site-header">
     <div class="header-inner">
-      <p class="site-title">唐卡传承公益体验课</p>
+      <a class="brand-mark" href="index.html" aria-label="菩提画院首页">
+        <img src="images/putihuayuan-logo.png" alt="" width="44" height="44" />
+        <span>
+          <strong>菩提画院</strong>
+          <small>唐卡传承公益体验课</small>
+        </span>
+      </a>
       <nav class="site-nav" aria-label="主导航">
         <a href="index.html" aria-current="page">课程列表</a>
         <a href="register.html">课程报名</a>
@@ -23,18 +29,70 @@
     </div>
   </header>
 
-  <main id="main" class="main-wrap">
-    <header class="page-intro" aria-labelledby="page-title">
-      <div class="hero-visual" aria-hidden="true">
-        <img src="images/hero-lotus.svg" alt="" width="120" height="120" class="hero-mandala" loading="eager" />
+  <main id="main" class="main-wrap main-wrap--gallery">
+    <section class="thangka-hero" aria-labelledby="page-title">
+      <div class="thangka-hero-copy">
+        <p class="tibetan-kicker" lang="bo">ཐང་ཀ་ · སྐུ་རྟེན་ · བཟང་པོ</p>
+        <span class="hero-badge">菩提画院 · 唐卡公益课程</span>
+        <h1 id="page-title">唐卡传承公益体验课</h1>
+        <p class="hero-lead">以佛像绘画为入门，认识唐卡的线描、设色、矿物颜料与造像仪轨。五天沉浸式体验，在安静专注中学习传统艺术。</p>
+        <p class="tibetan-mantra" lang="bo">ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ</p>
+        <div class="hero-actions">
+          <a id="btn-register" class="btn btn-primary" href="register.html">学员申请</a>
+          <a class="btn btn-secondary" href="query.html">学员查询</a>
+        </div>
       </div>
-      <span class="hero-badge">公益 · 传承 · 唐卡艺术</span>
-      <h1 id="page-title">课程报名</h1>
-      <p class="page-intro-lead">请选择下方课程办理学员申请。报名前请阅读「报名前须知」；提交后系统将发送确认邮件，工作人员将按顺序审核联系。</p>
-    </header>
+      <div class="thangka-hero-art" aria-label="菩提画院标志">
+        <img src="images/putihuayuan-logo.png" alt="菩提画院 Logo" width="420" height="420" loading="eager" />
+      </div>
+    </section>
+
+    <section class="culture-strip" aria-label="藏地文化关键词">
+      <span lang="bo">སྐུ་འདྲ</span>
+      <span>佛像绘画</span>
+      <span lang="bo">རི་མོ</span>
+      <span>矿物色</span>
+      <span lang="bo">དགེ་བ</span>
+      <span>公益传承</span>
+    </section>
+
+    <section class="world-gallery" aria-labelledby="gallery-title">
+      <div class="section-heading">
+        <p class="tibetan-kicker" lang="bo">བོད་ཀྱི་རིག་གནས</p>
+        <h2 id="gallery-title" class="section-title">课程图像</h2>
+        <p>参考 Thangka World 的藏地文化叙事方式，以图片、标题和简短说明呈现课程气质。</p>
+      </div>
+      <div class="culture-grid">
+        <figure class="culture-card culture-card--large">
+          <img src="素材/01_课程介绍.png" alt="唐卡课程介绍图" width="720" height="480" loading="lazy" />
+          <figcaption>
+            <span lang="bo">ཐང་ཀའི་རི་མོ</span>
+            <strong>唐卡课程</strong>
+            <small>从线条、比例、设色开始，体验传统佛像绘画。</small>
+          </figcaption>
+        </figure>
+        <figure class="culture-card">
+          <img src="素材/02_讲师介绍.png" alt="讲师介绍图" width="360" height="360" loading="lazy" />
+          <figcaption>
+            <span lang="bo">དགེ་རྒན</span>
+            <strong>讲师传授</strong>
+            <small>赵盛华居士带领学习基础法度与绘画方法。</small>
+          </figcaption>
+        </figure>
+        <figure class="culture-card">
+          <img src="素材/03_温馨提示.png" alt="课程温馨提示图" width="360" height="360" loading="lazy" />
+          <figcaption>
+            <span lang="bo">སྒྲིག་ལམ</span>
+            <strong>清净规则</strong>
+            <small>全程参与、手机养机场、茹素与五戒要求。</small>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
 
     <section class="panel-frame rules-panel" aria-labelledby="rules-title">
       <div class="panel-frame-header">
+        <p class="tibetan-kicker" lang="bo">དྲན་སྐུལ</p>
         <h2 id="rules-title" class="section-title">报名前须知</h2>
       </div>
       <div class="panel-frame-body">
@@ -52,8 +110,9 @@
       </div>
     </section>
 
-    <section class="panel-frame" aria-labelledby="course-list-title">
+    <section class="panel-frame course-list-panel" aria-labelledby="course-list-title">
       <div class="panel-frame-header">
+        <p class="tibetan-kicker" lang="bo">སློབ་ཚན</p>
         <h2 id="course-list-title" class="section-title">课程列表</h2>
       </div>
       <div class="panel-frame-body">
@@ -69,6 +128,7 @@
                 <span>佛像绘画 · 唐卡</span>
                 <span>普通话</span>
                 <span>公益课程</span>
+                <span lang="bo">ཐང་ཀ་</span>
               </p>
               <dl class="course-list-meta">
                 <div><dt>地点</dt><dd>广东 · 深圳市龙岗区横岗新园路 88 号 · 东方字礼文化美愈康养基地</dd></div>
@@ -78,26 +138,28 @@
             <div class="course-list-side">
               <span id="course-status-pill" class="status-pill status-pill--open" role="status">开放申请</span>
               <p class="course-list-quota">剩余名额：<strong id="spots-remaining">108</strong> / 108</p>
-              <a id="btn-register" class="btn btn-primary" href="register.html">学员申请</a>
+              <a class="btn btn-primary" href="register.html">学员申请</a>
             </div>
           </li>
         </ul>
       </div>
     </section>
 
-    <section class="panel-frame course-intro-panel" aria-labelledby="intro-title">
+    <section class="panel-frame course-intro-panel thangka-detail-panel" aria-labelledby="intro-title">
       <div class="panel-frame-header">
+        <p class="tibetan-kicker" lang="bo">ཞིབ་ཕྲ</p>
         <h2 id="intro-title" class="section-title">课程介绍</h2>
       </div>
       <div class="panel-frame-body">
         <figure class="figure-block">
-          <img id="course-banner-img" src="素材/course-banner.jpg" alt="唐卡传承公益体验课介绍" width="960" height="360" loading="lazy" />
+          <img id="course-banner-img" src="素材/04_课程详情与二维码.png" alt="唐卡传承公益体验课详情与二维码" width="960" height="540" loading="lazy" />
           <figcaption id="course-banner-fallback" class="figure-caption" hidden>请将课程介绍长图放入 <code>素材/course-banner.jpg</code> 后刷新页面。</figcaption>
         </figure>
       </div>
     </section>
 
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
+      <p class="tibetan-kicker" lang="bo">འབྲེལ་གཏུག</p>
       <h2 id="contact-title" class="section-title">联系与咨询</h2>
       <div class="contact-grid">
         <div class="qr-wrap" id="qr-box">

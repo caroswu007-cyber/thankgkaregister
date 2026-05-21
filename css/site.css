@@ -133,6 +133,44 @@ a:hover {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--color-gold-bright);
+  text-decoration: none;
+}
+
+.brand-mark img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 212, 138, 0.65);
+  box-shadow: 0 0 0 3px rgba(201, 164, 74, 0.14), 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.brand-mark span {
+  display: grid;
+  gap: 0.05rem;
+  line-height: 1.15;
+}
+
+.brand-mark strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 3.2vw, 1.32rem);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.38);
+}
+
+.brand-mark small {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: rgba(253, 249, 240, 0.72);
+}
+
 .site-nav {
   display: flex;
   flex-wrap: wrap;
@@ -1890,4 +1928,272 @@ a:hover {
 
 .main-wrap--wide {
   max-width: 720px;
+}
+
+/* —— Thangka World 参考风格：藏地叙事首页 —— */
+.main-wrap--gallery {
+  max-width: 1180px;
+}
+
+.thangka-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.85fr);
+  gap: clamp(1.5rem, 5vw, 3rem);
+  align-items: center;
+  min-height: clamp(520px, 72vh, 720px);
+  margin: calc(clamp(1.35rem, 4vw, 2.75rem) * -0.35) 0 clamp(1.75rem, 5vw, 3rem);
+  padding: clamp(1.4rem, 5vw, 3.25rem);
+  overflow: hidden;
+  color: #fff7d7;
+  border-radius: 0 0 32px 32px;
+  border: 1px solid rgba(232, 212, 138, 0.28);
+  background:
+    linear-gradient(90deg, rgba(13, 18, 34, 0.94) 0%, rgba(26, 31, 51, 0.78) 48%, rgba(122, 36, 44, 0.72) 100%),
+    radial-gradient(circle at 74% 18%, rgba(232, 212, 138, 0.32), transparent 25%),
+    url("../素材/01_课程介绍.png") center / cover no-repeat;
+  box-shadow: 0 24px 70px rgba(26, 31, 51, 0.24);
+}
+
+.thangka-hero::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(232, 212, 138, 0.34);
+  border-radius: 0 0 24px 24px;
+  pointer-events: none;
+}
+
+.thangka-hero::after {
+  content: "ཐང་ཀ་";
+  position: absolute;
+  right: clamp(1rem, 4vw, 3rem);
+  top: clamp(1rem, 5vw, 2.5rem);
+  font-family: Georgia, "Noto Serif Tibetan", serif;
+  font-size: clamp(3rem, 11vw, 8rem);
+  line-height: 1;
+  color: rgba(232, 212, 138, 0.13);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.thangka-hero-copy,
+.thangka-hero-art {
+  position: relative;
+  z-index: 1;
+}
+
+.thangka-hero h1 {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 8vw, 5rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0.16em;
+  color: #fff3b4;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
+}
+
+.thangka-hero .hero-lead {
+  margin: 0;
+  max-width: 36em;
+  color: rgba(253, 249, 240, 0.84);
+  font-size: clamp(1rem, 2.2vw, 1.16rem);
+}
+
+.tibetan-kicker {
+  margin: 0 0 0.55rem;
+  font-family: Georgia, "Noto Serif Tibetan", serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.18em;
+  color: var(--color-gold-bright);
+}
+
+.tibetan-mantra {
+  margin: 1.2rem 0 1.35rem;
+  font-family: Georgia, "Noto Serif Tibetan", serif;
+  font-size: clamp(1.05rem, 2.8vw, 1.55rem);
+  letter-spacing: 0.12em;
+  color: rgba(232, 212, 138, 0.88);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.thangka-hero-art {
+  justify-self: center;
+  width: min(100%, 420px);
+  padding: clamp(0.8rem, 3vw, 1.4rem);
+  border: 1px solid rgba(232, 212, 138, 0.36);
+  border-radius: 999px 999px 22px 22px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 241, 168, 0.26), transparent 48%),
+    rgba(8, 12, 24, 0.4);
+  box-shadow: inset 0 0 40px rgba(232, 212, 138, 0.08), 0 24px 54px rgba(0, 0, 0, 0.24);
+}
+
+.thangka-hero-art img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: saturate(1.05) contrast(1.04);
+}
+
+.culture-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem 1rem;
+  margin: 0 0 clamp(1.75rem, 5vw, 3rem);
+  padding: 0.9rem 1rem;
+  color: #fff3b4;
+  background: linear-gradient(90deg, var(--color-indigo-deep), #651f2a, var(--color-indigo-deep));
+  border-top: 2px solid var(--color-gold);
+  border-bottom: 2px solid var(--color-gold);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  box-shadow: var(--shadow-card);
+}
+
+.culture-strip [lang="bo"] {
+  font-family: Georgia, "Noto Serif Tibetan", serif;
+  color: var(--color-gold-bright);
+}
+
+.world-gallery {
+  margin-bottom: clamp(1.75rem, 5vw, 3rem);
+}
+
+.section-heading {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.section-heading .section-title {
+  margin-bottom: 0.35rem;
+}
+
+.section-heading p:not(.tibetan-kicker) {
+  margin: 0 auto;
+  max-width: 38rem;
+  color: var(--color-text-muted);
+}
+
+.culture-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.85fr;
+  grid-auto-rows: minmax(220px, auto);
+  gap: 1rem;
+}
+
+.culture-card {
+  position: relative;
+  min-height: 260px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(122, 92, 30, 0.34);
+  background: var(--color-indigo-deep);
+  box-shadow: var(--shadow-card), var(--shadow-soft);
+}
+
+.culture-card--large {
+  grid-row: span 2;
+}
+
+.culture-card img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  transform: scale(1.02);
+  filter: saturate(1.08) contrast(1.02);
+}
+
+.culture-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(10, 13, 24, 0.78) 100%);
+}
+
+.culture-card figcaption {
+  position: absolute;
+  z-index: 1;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  gap: 0.2rem;
+  color: #fff7d7;
+}
+
+.culture-card figcaption span {
+  font-family: Georgia, "Noto Serif Tibetan", serif;
+  color: var(--color-gold-bright);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+}
+
+.culture-card figcaption strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+
+.culture-card figcaption small {
+  max-width: 28rem;
+  font-family: var(--font-serif);
+  color: rgba(253, 249, 240, 0.82);
+}
+
+.panel-frame-header .tibetan-kicker,
+.contact-section > .tibetan-kicker {
+  margin-bottom: 0.25rem;
+  color: var(--color-gold-dark);
+}
+
+.course-list-panel {
+  margin-bottom: clamp(1.75rem, 5vw, 2.5rem);
+}
+
+.thangka-detail-panel .figure-block img {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 780px) {
+  .header-inner {
+    align-items: flex-start;
+  }
+
+  .brand-mark small {
+    display: none;
+  }
+
+  .thangka-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .thangka-hero-art {
+    width: min(72vw, 300px);
+    order: -1;
+  }
+
+  .culture-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .culture-card--large {
+    grid-row: auto;
+  }
 }

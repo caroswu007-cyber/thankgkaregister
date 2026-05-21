@@ -70,4 +70,10 @@ create policy "允许匿名插入报名"
 
 ## 学员查询页
 
-当前 `query.html` 仍读取 `data/students.json`。若希望查询也免维护 JSON，需要再在 Supabase 中增加 **RPC 函数**（按姓名+后六位返回一条）并改前端 — 可后续迭代。
+`query.html` 会按以下顺序查询：
+
+1. `js/query-config.js` / `js/sync-config.js` 中配置的腾讯文档查询代理；
+2. Supabase RPC：`query_registration_status(q_name, q_id_last6)`；
+3. 本地 `data/students.json` 演示数据。
+
+如果使用 Supabase 自动归档，请在 SQL Editor 执行仓库中的 `scripts/supabase-query-registration-status.sql`。脚本会创建 `query_registration_status` RPC，仅按「姓名 + 身份证后 6 位」返回有限字段，不给匿名用户开放整表读取，也不会修改后台管理口令。

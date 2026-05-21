@@ -2,28 +2,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap");
 
 :root {
-  /* 绢本、石青、朱砂、描金 */
-  --color-bg: #e9e0cf;
-  --color-bg-mid: #ddd2be;
-  --color-bg-elevated: #f6f1e4;
-  --color-surface: #fdf9f0;
-  --color-surface-warm: #faf6eb;
-  --color-indigo: #2c3554;
-  --color-indigo-deep: #1a1f33;
-  --color-mineral: #3d4d6b;
+  /* 参考站深色基调：夜蓝、暗红、描金 */
+  --color-bg: #050608;
+  --color-bg-mid: #0b0f18;
+  --color-bg-elevated: #151a25;
+  --color-surface: #0f141f;
+  --color-surface-warm: #161923;
+  --color-indigo: #263455;
+  --color-indigo-deep: #0c1120;
+  --color-mineral: #334566;
   --color-gold: #c9a44a;
   --color-gold-bright: #e8d48a;
-  --color-gold-dark: #7a5c1e;
-  --color-gold-soft: rgba(201, 164, 74, 0.28);
-  --color-cinnabar: #a8323a;
-  --color-cinnabar-deep: #7a242c;
-  --color-coral: #c45c48;
-  --color-text: #1f1a14;
-  --color-text-muted: #4a4338;
-  --color-border: rgba(122, 92, 30, 0.32);
-  --color-border-strong: rgba(201, 164, 74, 0.55);
-  --shadow-soft: 0 12px 40px rgba(26, 31, 51, 0.08);
-  --shadow-card: 0 4px 0 rgba(122, 92, 30, 0.12), 0 8px 32px rgba(26, 31, 51, 0.06);
+  --color-gold-dark: #b78f3f;
+  --color-gold-soft: rgba(201, 164, 74, 0.34);
+  --color-cinnabar: #a91d22;
+  --color-cinnabar-deep: #d33a32;
+  --color-coral: #d86a58;
+  --color-text: #ffffff;
+  --color-text-muted: #d7d7d7;
+  --color-border: rgba(232, 212, 138, 0.22);
+  --color-border-strong: rgba(232, 212, 138, 0.48);
+  --shadow-soft: 0 18px 54px rgba(0, 0, 0, 0.28);
+  --shadow-card: 0 1px 0 rgba(232, 212, 138, 0.08), 0 16px 42px rgba(0, 0, 0, 0.22);
   --radius-md: 10px;
   --radius-lg: 16px;
   --font-display: "ZCOOL XiaoWei", "STKaiti", "KaiTi", "SimKai", serif;
@@ -53,12 +53,11 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   background-image:
-    url("../images/bg-pattern.svg"),
-    radial-gradient(ellipse 100% 60% at 50% -15%, rgba(232, 212, 138, 0.22), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 100% 30%, rgba(168, 50, 58, 0.06), transparent 50%),
-    radial-gradient(ellipse 60% 50% at 0% 80%, rgba(60, 77, 107, 0.08), transparent 45%),
-    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-mid) 55%, #d4c9b4 100%);
-  background-size: auto, auto, auto, auto, auto;
+    radial-gradient(ellipse 42% 34% at 86% 12%, rgba(169, 29, 34, 0.14), transparent 58%),
+    radial-gradient(ellipse 38% 30% at 8% 90%, rgba(232, 212, 138, 0.08), transparent 55%),
+    linear-gradient(180deg, #020304 0%, #07090d 42%, #0b0f18 100%);
+  background-attachment: fixed;
+  background-size: auto;
 }
 
 code {
@@ -190,12 +189,12 @@ a:hover {
 
 .site-nav a:hover {
   color: #fff;
-  border-bottom-color: var(--color-gold);
+  border-bottom-color: var(--color-cinnabar);
 }
 
 .site-nav a[aria-current="page"] {
-  color: var(--color-gold-bright);
-  border-bottom-color: var(--color-gold);
+  color: #fff;
+  border-bottom-color: var(--color-cinnabar);
 }
 
 /* —— 主布局 —— */
@@ -428,15 +427,15 @@ a:hover {
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, #e0c56a 0%, var(--color-gold) 35%, var(--color-gold-dark) 100%);
-  color: #1a1410;
-  box-shadow: 0 4px 14px rgba(122, 92, 30, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(90, 70, 30, 0.35);
+  background: linear-gradient(180deg, #c7433c 0%, var(--color-cinnabar) 58%, #741318 100%);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(169, 29, 34, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover:not(:disabled):not(.is-disabled) {
   filter: brightness(1.05);
-  box-shadow: 0 6px 22px rgba(122, 92, 30, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 28px rgba(169, 29, 34, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
 .btn-primary:disabled,
@@ -1945,20 +1944,20 @@ a:hover {
   margin: 0 0 clamp(1.5rem, 4vw, 2.25rem);
   padding: clamp(1.35rem, 4vw, 2.4rem);
   overflow: hidden;
-  color: #fff7d7;
+  color: #fff;
   border-radius: 24px;
-  border: 1px solid rgba(232, 212, 138, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   background:
-    radial-gradient(circle at 84% 22%, rgba(232, 212, 138, 0.12), transparent 28%),
-    linear-gradient(120deg, #12182a 0%, #222b46 55%, #6b2130 100%);
-  box-shadow: 0 18px 54px rgba(26, 31, 51, 0.18);
+    radial-gradient(circle at 86% 18%, rgba(201, 164, 74, 0.14), transparent 30%),
+    linear-gradient(105deg, #050608 0%, #0a0d13 52%, #48131a 100%);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.42);
 }
 
 .thangka-hero::before {
   content: "";
   position: absolute;
   inset: 12px;
-  border: 1px solid rgba(232, 212, 138, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 18px;
   pointer-events: none;
 }
@@ -1971,7 +1970,7 @@ a:hover {
   font-family: Georgia, "Noto Serif Tibetan", serif;
   font-size: clamp(3rem, 11vw, 8rem);
   line-height: 1;
-  color: rgba(232, 212, 138, 0.13);
+  color: rgba(255, 255, 255, 0.1);
   letter-spacing: 0.02em;
   pointer-events: none;
 }
@@ -1985,18 +1984,18 @@ a:hover {
 .thangka-hero h1 {
   margin: 0 0 0.9rem;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 3.8rem);
-  font-weight: 400;
-  line-height: 1.18;
-  letter-spacing: 0.16em;
-  color: #fff3b4;
-  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
+  font-size: clamp(2.25rem, 7vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.08em;
+  color: #fff;
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.72);
 }
 
 .thangka-hero .hero-lead {
   margin: 0;
   max-width: 36em;
-  color: rgba(253, 249, 240, 0.84);
+  color: rgba(255, 255, 255, 0.88);
   font-size: clamp(1rem, 2.2vw, 1.16rem);
 }
 
@@ -2013,7 +2012,7 @@ a:hover {
   font-family: Georgia, "Noto Serif Tibetan", serif;
   font-size: clamp(1.05rem, 2.8vw, 1.55rem);
   letter-spacing: 0.12em;
-  color: rgba(232, 212, 138, 0.88);
+  color: #fff;
 }
 
 .hero-actions {
@@ -2050,10 +2049,10 @@ a:hover {
   gap: 0.65rem 1rem;
   margin: 0 0 clamp(1.75rem, 5vw, 3rem);
   padding: 0.9rem 1rem;
-  color: #fff3b4;
-  background: linear-gradient(90deg, var(--color-indigo-deep), #651f2a, var(--color-indigo-deep));
-  border-top: 2px solid var(--color-gold);
-  border-bottom: 2px solid var(--color-gold);
+  color: #fff;
+  background: linear-gradient(90deg, #050608 0%, #351018 48%, #7f171b 50%, #351018 52%, #050608 100%);
+  border-top: 2px solid rgba(232, 212, 138, 0.3);
+  border-bottom: 2px solid rgba(232, 212, 138, 0.3);
   font-family: var(--font-sans);
   font-size: 0.88rem;
   letter-spacing: 0.08em;
@@ -2062,7 +2061,7 @@ a:hover {
 
 .culture-strip [lang="bo"] {
   font-family: Georgia, "Noto Serif Tibetan", serif;
-  color: var(--color-gold-bright);
+  color: #fff;
 }
 
 .world-gallery {
@@ -2165,6 +2164,82 @@ a:hover {
 
 .thangka-detail-panel .figure-block img {
   display: none;
+}
+
+/* 深色主题细节：让普通卡片、表单和列表都融入暗色金边风格 */
+.page-intro,
+.course-card,
+.register-form,
+.query-card,
+.success-card,
+.admin-card,
+.panel-frame,
+.contact-section {
+  background: linear-gradient(180deg, rgba(13, 15, 22, 0.98) 0%, rgba(5, 6, 8, 0.98) 100%);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: var(--shadow-card), var(--shadow-soft);
+}
+
+.hero-badge,
+.course-list-item,
+.course-confirm,
+.tips-note,
+.rules-panel-note,
+.form-aside-muted,
+.qr-wrap,
+.spots-badge,
+.form-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--color-text);
+}
+
+.panel-frame-header {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, rgba(169, 29, 34, 0.12) 50%, rgba(255, 255, 255, 0.04) 100%);
+  border-bottom-color: rgba(201, 164, 74, 0.38);
+}
+
+.hero h1,
+.page-intro-title,
+.form-page-title,
+.section-title,
+.course-list-main h3,
+.form-section-title,
+.contact-copy h3 {
+  color: #fff;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.65);
+}
+
+.course-list-date,
+.form-label,
+.contact-copy,
+.panel-frame-body,
+.register-form,
+.query-card,
+.success-card,
+.admin-card {
+  color: var(--color-text);
+}
+
+.hero-badge,
+.course-list-date strong,
+.course-confirm-title,
+.spots-badge strong,
+a {
+  color: var(--color-cinnabar-deep);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: var(--color-cinnabar);
 }
 
 @media (max-width: 780px) {

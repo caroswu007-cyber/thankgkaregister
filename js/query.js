@@ -1,5 +1,5 @@
 /**
- * 学员查询：优先腾讯文档智能表（经 server POST /query），否则 data/students.json
+ * 学员查询：优先腾讯文档智能表（经 server POST /query），其次 Supabase RPC，否则 data/students.json
  */
 (function () {
   "use strict";
@@ -72,6 +72,65 @@
     });
   }
 
+  function supabaseHeaders(apiKey) {
+    var k = String(apiKey || "");
+    var h = {
+      "Content-Type": "application/json",
+      apikey: k,
+    };
+    if (k.indexOf("eyJ") === 0) {
+      h.Authorization = "Bearer " + k;
+    }
+    return h;
+  }
+
+  function resolveSupabaseRpcUrl() {
+    var sc = window.TangkaSyncConfig || {};
+    if (
+      !sc.supabaseUrl ||
+      String(sc.supabaseUrl).indexOf("http") !== 0 ||
+      !sc.supabaseAnonKey
+    ) {
+      return "";
+    }
+    var base = String(sc.supabaseUrl).replace(/\/$/, "");
+    if (base.indexOf("/rest/v1/") !== -1) {
+      base = base.replace(/\/rest\/v1\/?.*$/, "");
+    }
+    return base + "/rest/v1/rpc/query_registration_status";
+  }
+
+  function fetchSupabaseQuery(name, last6) {
+    var sc = window.TangkaSyncConfig || {};
+    var url = resolveSupabaseRpcUrl();
+    if (!url) return Promise.reject(new Error("未配置 Supabase 查询"));
+
+    return fetch(url, {
+      method: "POST",
+      headers: supabaseHeaders(sc.supabaseAnonKey),
+      body: JSON.stringify({ q_name: name, q_id_last6: last6 }),
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null;
+        try {
+          j = JSON.parse(t || "null");
+        } catch (ignore) {}
+        if (!r.ok) {
+          var msg =
+            (j && (j.message || j.error)) ||
+            t ||
+            "Supabase 查询接口 HTTP " + r.status;
+          if (r.status === 404 || String(msg).indexOf("Could not find") !== -1) {
+            msg =
+              "Supabase 查询函数尚未创建，请先在 Supabase SQL Editor 执行 scripts/supabase-registrations.sql 的最新版。";
+          }
+          throw new Error(msg);
+        }
+        return Array.isArray(j) ? j : [];
+      });
+    });
+  }
+
   function renderTencentResults(api) {
     var s = api.student || {};
     $("res-name").textContent = s.name || "—";
@@ -85,6 +144,33 @@
     $("res-phone").textContent = s.phone || "—";
     $("res-wechat").textContent = s.wechat || "—";
     $("res-current-course").textContent = api.currentCourseLine || "—";
+
+    setVisible("query-results", true);
+    setVisible("query-empty", false);
+    setVisible("query-error", false);
+  }
+
+  function renderSupabaseResults(rows) {
+    if (!rows || !rows.length) {
+      showNotFound();
+      return;
+    }
+    if (rows.length > 1) {
+      showError("存在多条匹配记录，请联系工作人员核实。");
+      return;
+    }
+
+    var s = rows[0] || {};
+    $("res-name").textContent = s.name || "—";
+    $("res-status").textContent = s.status_display || "已提交报名";
+    $("res-count").textContent = "1";
+    $("res-history").textContent = s.submitted_at
+      ? "提交时间：" + String(s.submitted_at).replace("T", " ").slice(0, 19)
+      : "已在报名系统登记";
+    $("res-phone").textContent = s.phone || "—";
+    $("res-wechat").textContent = s.wechat || "—";
+    $("res-current-course").textContent =
+      s.current_course_line || "唐卡传承公益体验课";
 
     setVisible("query-results", true);
     setVisible("query-empty", false);
@@ -222,6 +308,8 @@
           }
           renderTencentResults(api);
         });
+      } else if (resolveSupabaseRpcUrl()) {
+        chain = fetchSupabaseQuery(name, last6).then(renderSupabaseResults);
       } else {
         chain = fetch(DATA_URL, { cache: "no-store" })
           .then(function (r) {

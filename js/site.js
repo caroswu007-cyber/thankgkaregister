@@ -118,7 +118,7 @@
           } else {
             btn.disabled = false;
           }
-          btn.textContent = "学员申请";
+          btn.textContent = "立即报名";
           btn.removeAttribute("aria-disabled");
         }
       }

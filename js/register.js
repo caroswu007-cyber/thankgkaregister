@@ -223,14 +223,11 @@
     if (form) form.hidden = false;
 
     var cfgPre = window.TangkaEmailConfig || {};
-    var demoSubmit = !!cfgPre.allowDemoSubmit;
-    var demoBanner = $("register-demo-banner");
-    if (demoBanner) demoBanner.hidden = !demoSubmit;
     if (cfgHint) {
       var syncOn =
         window.TangkaRegistrationSync &&
         window.TangkaRegistrationSync.isEnabled();
-      cfgHint.hidden = isEmailConfigured() || demoSubmit || syncOn;
+      cfgHint.hidden = isEmailConfigured() || syncOn;
     }
 
     if (
@@ -263,13 +260,11 @@
       }
 
       var cfg = window.TangkaEmailConfig || {};
-      var demo = !!cfg.allowDemoSubmit;
       var syncOk =
         window.TangkaRegistrationSync &&
         window.TangkaRegistrationSync.isEnabled();
 
       function canSubmitOutbound() {
-        if (demo) return true;
         if (isEmailConfigured()) return true;
         if (syncOk) return true;
         return false;
@@ -277,12 +272,12 @@
 
       if (!canSubmitOutbound()) {
         showTopError(
-          "请至少启用一种提交方式：① 配置 EmailJS；② 或在 js/sync-config.js 中填写 Supabase / 自定义同步地址；③ 或开启 allowDemoSubmit 演示模式。"
+          "当前提交通道暂不可用，请稍后再试或联系工作人员。"
         );
         return;
       }
 
-      if (!demo && isEmailConfigured() && typeof emailjs === "undefined") {
+      if (isEmailConfigured() && typeof emailjs === "undefined") {
         showTopError("未能加载 EmailJS 脚本，请检查网络后重试。");
         return;
       }
@@ -370,38 +365,6 @@
 
       sha256HexSafe(data.idCard)
         .then(function (hash) {
-          if (demo) {
-            if (isEmailConfigured() && typeof emailjs === "undefined") {
-              return Promise.reject(
-                new Error("已配置 EmailJS 但未加载脚本，请检查网络或 CDN。")
-              );
-            }
-            var demoTasks = [];
-            if (syncOk) {
-              demoTasks.push(
-                window.TangkaRegistrationSync.submitRegistration(data, hash)
-              );
-            }
-            if (isEmailConfigured()) {
-              demoTasks.push(sendEmailsSequentially(hash));
-            }
-            if (!demoTasks.length) {
-              if (window.console && console.log) {
-                console.log(
-                  "[演示模式] 未配置 EmailJS 与数据同步，数据未外传。TSV 行示例：",
-                  td.buildPasteRow(
-                    Object.assign({}, data, { idSha256: hash })
-                  )
-                );
-              }
-              finishSuccess(data);
-              return;
-            }
-            return Promise.all(demoTasks).then(function () {
-              finishSuccess(data);
-            });
-          }
-
           var tasks = [];
           if (syncOk) {
             tasks.push(

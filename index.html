@@ -2,52 +2,64 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="唐卡传承公益体验课 — 佛像绘画·唐卡，广东深圳龙岗区公益课程报名。" />
-  <title>课程列表 · 唐卡传承公益体验课</title>
+  <title>唐卡传承公益体验课 · 菩提画院</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Serif+Tibetan:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="css/site.css" />
 </head>
-<body>
+<body class="page-home-grand">
   <a class="skip-link" href="#main">跳到主要内容</a>
 
-  <header class="site-header">
+  <header class="site-header site-header--grand">
     <div class="header-inner">
       <a class="brand-mark" href="index.html" aria-label="菩提画院首页">
-        <img src="images/putihuayuan-logo.png" alt="" width="44" height="44" />
+        <img src="images/putihuayuan-logo.png" alt="" width="40" height="40" />
         <span>
           <strong>菩提画院</strong>
-          <small>唐卡传承公益体验课</small>
         </span>
       </a>
-      <nav class="site-nav" aria-label="主导航">
-        <a href="index.html" aria-current="page">课程列表</a>
-        <a href="register.html">课程报名</a>
-        <a href="query.html">学员查询</a>
+      <nav class="site-nav site-nav--grand" aria-label="主导航">
+        <a href="index.html" aria-current="page">首页</a>
+        <a href="register.html">报名</a>
+        <a href="query.html">查询</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="main-wrap main-wrap--gallery">
-    <section class="thangka-hero" aria-labelledby="page-title">
-      <div class="thangka-hero-copy">
-        <p class="tibetan-kicker" lang="bo">ཐང་ཀ་ · སྐུ་རྟེན་ · བཟང་པོ</p>
-        <span class="hero-badge">菩提画院 · 唐卡公益课程</span>
-        <h1 id="page-title">唐卡传承公益体验课</h1>
-        <p class="hero-lead">以佛像绘画为入门，认识唐卡的线描、设色、矿物颜料与造像仪轨。五天沉浸式体验，在安静专注中学习传统艺术。</p>
-        <p class="tibetan-mantra" lang="bo">ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ</p>
-        <div class="hero-actions">
-          <a id="btn-register" class="btn btn-primary" href="register.html">学员申请</a>
-          <a class="btn btn-secondary" href="query.html">学员查询</a>
-        </div>
+  <main id="main" class="home-grand">
+    <section class="grand-hero" aria-labelledby="page-title">
+      <div class="grand-atmosphere" aria-hidden="true">
+        <div class="grand-atmosphere__sky"></div>
+        <div class="grand-atmosphere__mountains"></div>
+        <div class="grand-atmosphere__figures"></div>
+        <div class="grand-atmosphere__wind"></div>
+        <p class="grand-atmosphere__tibetan" lang="bo">ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ</p>
       </div>
-      <div class="thangka-hero-art" aria-label="菩提画院标志">
-        <img src="images/putihuayuan-logo.png" alt="菩提画院 Logo" width="420" height="420" loading="eager" />
+
+      <div class="grand-hero__inner">
+        <p class="grand-eyebrow" lang="bo">ཐང་ཀ་ · སྐུ་རྟེན་ · བཟང་པོ</p>
+
+        <div class="grand-logo-ring" aria-hidden="true">
+          <img src="images/putihuayuan-logo.png" alt="" width="120" height="120" loading="eager" />
+        </div>
+
+        <h1 id="page-title" class="grand-title">唐卡传承公益体验课</h1>
+        <p class="grand-lead">五天沉浸式体验 · 线描设色 · 矿物颜料 · 造像仪轨</p>
+
+        <div class="grand-actions">
+          <a id="btn-register" class="btn btn-primary btn-grand-primary" href="register.html">立即报名</a>
+          <a class="btn btn-secondary btn-grand-secondary" href="query.html">查询报名</a>
+        </div>
       </div>
     </section>
 
-    <section class="culture-strip" aria-label="藏地文化关键词">
+    <section class="grand-strip" aria-label="课程关键词">
       <span lang="bo">སྐུ་འདྲ</span>
       <span>佛像绘画</span>
       <span lang="bo">རི་མོ</span>
@@ -56,81 +68,76 @@
       <span>公益传承</span>
     </section>
 
-    <section class="panel-frame rules-panel" aria-labelledby="rules-title">
-      <div class="panel-frame-header">
-        <p class="tibetan-kicker" lang="bo">དྲན་སྐུལ</p>
-        <h2 id="rules-title" class="section-title">报名前须知</h2>
-      </div>
-      <div class="panel-frame-body">
-        <p>参加本课程需具备一定的身心健康基础，请确保您已了解并同意以下事项后再提交报名：</p>
-        <ol>
-          <li>到课程报到日，须满 <strong>16 周岁</strong>；须事先征得家属同意。</li>
-          <li>请确认身体健康状况适合参与五天紧凑课程；如有心脑血管、哮喘等慢性疾病请慎重评估。</li>
-          <li>须<strong>全程参与</strong>五天课程，不得中途无故缺席。</li>
-          <li>课程期间手机须存放于「养机场」；全程遵守：不杀生、不偷盗、不邪淫、不妄语、不饮酒。</li>
-          <li>课程期间全天<strong>茹素</strong>；主办方免费提供绘画工具与矿物颜料。</li>
-          <li>本期限 <strong>108</strong> 位名额，先到先得；请勿使用同一证件重复提交。</li>
-          <li>报名后请留意邮箱（含垃圾箱），确认邮件与后续通知均通过电子邮件发送。</li>
-        </ol>
-        <p class="rules-panel-note">具体勾选项以在线报名表「健康与知情声明」为准；如有疑问请先通过微信咨询（见页面底部）。</p>
+    <section class="grand-course" aria-labelledby="course-title" id="course-item-main">
+      <p class="grand-section-kicker" lang="bo">སློབ་ཚན</p>
+      <h2 id="course-title" class="grand-section-title">本期课程</h2>
+
+      <div class="grand-course-card">
+        <div class="grand-course-head">
+          <div>
+            <p class="grand-course-date">2026 年 4 月 8 日 — 4 月 12 日</p>
+            <p class="grand-course-meta">共五天 · 线下体验 · 普通话</p>
+          </div>
+          <span id="course-status-pill" class="status-pill status-pill--open" role="status">开放申请</span>
+        </div>
+
+        <h3 class="grand-course-name">唐卡传承公益体验课</h3>
+
+        <dl class="grand-course-facts">
+          <div><dt>地点</dt><dd>广东 · 深圳市龙岗区横岗新园路 88 号</dd></div>
+          <div><dt>讲师</dt><dd>赵盛华居士</dd></div>
+          <div><dt>名额</dt><dd>剩余 <strong id="spots-remaining">108</strong> / 108</dd></div>
+        </dl>
+
+        <a class="btn btn-primary btn-grand-inline" href="register.html">学员申请</a>
       </div>
     </section>
 
-    <section class="panel-frame course-list-panel" aria-labelledby="course-list-title">
-      <div class="panel-frame-header">
-        <p class="tibetan-kicker" lang="bo">སློབ་ཚན</p>
-        <h2 id="course-list-title" class="section-title">课程列表</h2>
-      </div>
-      <div class="panel-frame-body">
-        <ul class="course-list">
-          <li class="course-list-item" id="course-item-main">
-            <div class="course-list-date">
-              <strong>2026 年 4 月 8 日 — 4 月 12 日</strong>
-              共五天 · 线下体验
-            </div>
-            <div class="course-list-main">
-              <h3>唐卡传承公益体验课</h3>
-              <p class="course-list-tags">
-                <span>佛像绘画 · 唐卡</span>
-                <span>普通话</span>
-                <span>公益课程</span>
-                <span lang="bo">ཐང་ཀ་</span>
-              </p>
-              <dl class="course-list-meta">
-                <div><dt>地点</dt><dd>广东 · 深圳市龙岗区横岗新园路 88 号 · 东方字礼文化美愈康养基地</dd></div>
-                <div><dt>讲师</dt><dd>赵盛华居士</dd></div>
-              </dl>
-            </div>
-            <div class="course-list-side">
-              <span id="course-status-pill" class="status-pill status-pill--open" role="status">开放申请</span>
-              <p class="course-list-quota">剩余名额：<strong id="spots-remaining">108</strong> / 108</p>
-              <a class="btn btn-primary" href="register.html">学员申请</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+    <section class="grand-rules" aria-labelledby="rules-title">
+      <p class="grand-section-kicker" lang="bo">དྲན་སྐུལ</p>
+      <h2 id="rules-title" class="grand-section-title">报名前须知</h2>
+
+      <ul class="grand-rules-grid">
+        <li>
+          <strong>年龄与同意</strong>
+          <span>报到日须满 16 周岁，并事先征得家属同意。</span>
+        </li>
+        <li>
+          <strong>全程参与</strong>
+          <span>五天课程须全程参加，不得无故缺席。</span>
+        </li>
+        <li>
+          <strong>清净规则</strong>
+          <span>手机存放养机场；全天茹素；遵守五戒。</span>
+        </li>
+        <li>
+          <strong>邮件确认</strong>
+          <span>报名后请留意邮箱（含垃圾箱）接收确认与通知。</span>
+        </li>
+      </ul>
+      <p class="grand-rules-note">具体勾选项以报名表「健康与知情声明」为准；有疑问请微信咨询。</p>
     </section>
 
-    <section id="contact" class="contact-section" aria-labelledby="contact-title">
-      <p class="tibetan-kicker" lang="bo">འབྲེལ་གཏུག</p>
-      <h2 id="contact-title" class="section-title">联系与咨询</h2>
-      <div class="contact-grid">
+    <section id="contact" class="grand-contact" aria-labelledby="contact-title">
+      <p class="grand-section-kicker" lang="bo">འབྲེལ་གཏུག</p>
+      <h2 id="contact-title" class="grand-section-title">联系咨询</h2>
+
+      <div class="grand-contact-card">
         <div class="qr-wrap" id="qr-box">
-          <img id="qr-img" src="素材/wechat-qr.png" alt="微信二维码 — 升莲" width="200" height="200" loading="lazy" />
-          <div id="qr-placeholder" class="qr-placeholder" hidden>请将微信二维码图片保存为<br /><strong>素材/wechat-qr.png</strong><br />后刷新页面显示</div>
+          <img id="qr-img" src="素材/wechat-qr.png" alt="微信二维码 — 升莲" width="160" height="160" loading="lazy" />
+          <div id="qr-placeholder" class="qr-placeholder" hidden aria-hidden="true"></div>
         </div>
         <div class="contact-copy">
           <h3>微信咨询 · 升莲</h3>
-          <p>扫描二维码添加好友，验证备注请填写「唐卡」。报名审核、课程安排等问题可通过微信与工作人员沟通。</p>
-          <p><a class="btn btn-secondary" href="query.html">已报名？学员查询</a></p>
+          <p>扫码添加好友，验证备注请填写「唐卡」。</p>
+          <a class="btn btn-secondary" href="query.html">已报名？学员查询</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer site-footer--grand">
     <p>唐卡传承公益体验课 · 东方字礼文化</p>
-    <p>在线报名 · 邮件确认 · 管理后台归档</p>
   </footer>
 
   <script src="js/site.js"></script>

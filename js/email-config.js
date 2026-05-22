@@ -47,12 +47,4 @@ window.TangkaEmailConfig = {
   courseDates: "2026年4月8日 — 4月12日（共五天）",
   coursePlace:
     "广东 · 深圳市龙岗区横岗新园路88号 · 东方字礼文化美愈康养基地",
-
-  /**
-   * 演示模式：为 true 时仍可递减本地名额；若已配置 Supabase/腾讯代理/自定义接口，
-   * 会与邮件并行写入（见 register.js）。未配邮箱且未配同步时，仅控制台打印 TSV 示例。
-   * 若已正确配置 EmailJS（非 YOUR_ 占位），演示模式下**仍会发送**报名者与管理员邮件。
-   * 正式上线、且不需要演示时，请改为 false。
-   */
-  allowDemoSubmit: true,
 };

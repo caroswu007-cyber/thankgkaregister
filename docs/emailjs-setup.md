@@ -47,9 +47,7 @@
 2. 将 `serviceId`、`templateApplicant`、`templateAdmin` 替换为实际 ID。  
 3. 将 `adminNotifyEmail` 设为管理员收件邮箱（与管理员模板 To 策略一致）。  
 4. 确认四个字段都不再包含占位符 `YOUR_` 后，即视为「已配置」。  
-5. **`allowDemoSubmit`**：  
-   - 联调时可保持 **`true`**：仍会跳过 Supabase/腾讯代理，但若 EmailJS 已配好，**仍会真实发两封邮件**。  
-   - 正式上线若不再需要「无邮件试提交」，可改为 **`false`**，并确保 EmailJS 或同步渠道至少一种可用。
+5. 上线前请确认 EmailJS 或同步渠道至少一种可用；否则报名表会提示暂不可提交。
 
 ## 4. 常见问题
 

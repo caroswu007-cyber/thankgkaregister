@@ -9,7 +9,7 @@
  * ② 本地 / 任意托管：直接把下方 supabaseUrl、supabaseAnonKey 填字符串后部署。
  *
  * anon key 可出现在前端时，务必只给 anon 配 insert 策略、勿给 anon select。
- * 留空则不同步（仍可走 EmailJS / 演示模式）。
+ * 留空则不同步（仍可走 EmailJS）。
  */
 window.TangkaSyncConfig = {
   /** 例：https://xxxx.supabase.co/rest/v1/registrations 或 https://xxxx.supabase.co（代码会自动补全路径） */

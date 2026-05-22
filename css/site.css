@@ -2758,7 +2758,7 @@ a {
   color: rgba(215, 215, 215, 0.55);
 }
 
-/* 联系 */
+/* 指导老师海报 */
 .grand-contact-card {
   display: flex;
   flex-direction: column;
@@ -2771,9 +2771,23 @@ a {
   text-align: center;
 }
 
-.grand-contact .qr-wrap {
+.teacher-poster {
+  margin: 0;
+  width: min(100%, 320px);
+  padding: 0.45rem;
+  border-radius: 20px;
+  border: 1px solid rgba(201, 164, 74, 0.3);
   background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(201, 164, 74, 0.28);
+  box-shadow:
+    0 16px 42px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.teacher-poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
 }
 
 .grand-contact .contact-copy h3 {
@@ -2789,6 +2803,10 @@ a {
   font-family: var(--font-sans);
   font-size: 0.88rem;
   color: var(--color-text-muted);
+}
+
+.grand-contact .teacher-copy-note {
+  color: rgba(215, 215, 215, 0.68);
 }
 
 .site-footer--grand {
@@ -2825,6 +2843,14 @@ a {
     text-align: left;
     align-items: center;
     justify-content: center;
+  }
+
+  .grand-teacher-card {
+    align-items: center;
+  }
+
+  .teacher-copy {
+    max-width: 22rem;
   }
 
   .grand-rules-grid {

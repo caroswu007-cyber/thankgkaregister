@@ -53,27 +53,69 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   background-image:
-    linear-gradient(180deg, rgba(2, 3, 4, 0.94) 0%, rgba(7, 9, 13, 0.97) 58%, rgba(11, 15, 24, 0.98) 100%),
+    linear-gradient(180deg, rgba(2, 3, 4, 0.6) 0%, rgba(5, 7, 11, 0.76) 48%, rgba(5, 6, 8, 0.92) 100%),
+    radial-gradient(ellipse 65% 36% at 50% 12%, rgba(38, 52, 85, 0.28), transparent 66%),
+    radial-gradient(ellipse 44% 28% at 88% 22%, rgba(169, 29, 34, 0.18), transparent 60%),
+    url("../素材/阿里岡仁波奇.jpg"),
     url("../素材/A_thangka_(religious_painting),_School_of_Traditional_Arts,_Thimphu.jpg"),
-    url("../素材/images.jpg"),
-    radial-gradient(ellipse 42% 34% at 86% 12%, rgba(169, 29, 34, 0.14), transparent 58%),
-    radial-gradient(ellipse 38% 30% at 8% 90%, rgba(232, 212, 138, 0.08), transparent 55%),
     linear-gradient(180deg, #020304 0%, #07090d 42%, #0b0f18 100%);
   background-attachment: fixed;
   background-position:
     center,
-    right -6rem top 6rem,
-    left -3rem bottom 8rem,
     center,
     center,
+    center top,
+    right -8rem bottom 2rem,
     center;
   background-repeat: no-repeat;
   background-size:
     auto,
-    min(700px, 130vw) auto,
-    min(340px, 72vw) auto,
     auto,
     auto,
+    cover,
+    min(720px, 120vw) auto,
+    auto;
+}
+
+.page-register {
+  background-image:
+    linear-gradient(180deg, rgba(2, 3, 4, 0.56) 0%, rgba(5, 7, 11, 0.72) 46%, rgba(5, 6, 8, 0.94) 100%),
+    radial-gradient(ellipse 56% 30% at 50% 12%, rgba(201, 164, 74, 0.18), transparent 66%),
+    radial-gradient(ellipse 42% 26% at 88% 20%, rgba(169, 29, 34, 0.2), transparent 62%),
+    url("../素材/A_thangka_(religious_painting),_School_of_Traditional_Arts,_Thimphu.jpg"),
+    linear-gradient(180deg, #020304 0%, #07090d 48%, #0b0f18 100%);
+  background-position:
+    center,
+    center,
+    center,
+    center top,
+    center;
+  background-size:
+    auto,
+    auto,
+    auto,
+    cover,
+    auto;
+}
+
+.page-query {
+  background-image:
+    linear-gradient(180deg, rgba(2, 3, 4, 0.58) 0%, rgba(5, 7, 11, 0.74) 48%, rgba(5, 6, 8, 0.94) 100%),
+    radial-gradient(ellipse 54% 30% at 50% 14%, rgba(201, 164, 74, 0.18), transparent 68%),
+    radial-gradient(ellipse 40% 28% at 18% 18%, rgba(38, 52, 85, 0.18), transparent 62%),
+    url("../素材/images.jpg"),
+    linear-gradient(180deg, #020304 0%, #07090d 48%, #0b0f18 100%);
+  background-position:
+    center,
+    center,
+    center,
+    center 28%,
+    center;
+  background-size:
+    auto,
+    auto,
+    auto,
+    cover,
     auto;
 }
 
@@ -2177,12 +2219,20 @@ a:hover {
 .register-form,
 .query-card,
 .success-card,
+.success-panel,
+.result-card,
 .admin-card,
 .panel-frame,
 .contact-section {
-  background: linear-gradient(180deg, rgba(13, 15, 22, 0.98) 0%, rgba(5, 6, 8, 0.98) 100%);
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: var(--shadow-card), var(--shadow-soft);
+  background:
+    radial-gradient(ellipse 110% 70% at 50% 0%, rgba(38, 52, 85, 0.2), transparent 62%),
+    linear-gradient(180deg, rgba(13, 15, 22, 0.9) 0%, rgba(5, 6, 8, 0.92) 100%);
+  border-color: rgba(232, 212, 138, 0.26);
+  box-shadow:
+    0 1px 0 rgba(232, 212, 138, 0.1),
+    0 18px 54px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
 }
 
 .hero-badge,
@@ -2194,7 +2244,7 @@ a:hover {
 .qr-wrap,
 .spots-badge,
 .form-input {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.075);
   border-color: rgba(255, 255, 255, 0.18);
   color: var(--color-text);
 }

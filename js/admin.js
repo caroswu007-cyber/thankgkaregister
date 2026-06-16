@@ -124,6 +124,44 @@
     });
   }
 
+  function deleteRegistration(secret, id) {
+    var sync = getSyncCfg();
+    var table = sync.supabaseTable || "registrations";
+    var url = buildSupabaseRestUrl(
+      "/" + encodeURIComponent(table) + "?id=eq." + encodeURIComponent(id)
+    );
+    if (!url) {
+      return Promise.reject(
+        new Error("尚未配置 Supabase（js/sync-config.js）。")
+      );
+    }
+    var headers = supabaseHeaders(secret);
+    headers.Prefer = "return=representation";
+    return fetch(url, {
+      method: "DELETE",
+      headers: headers,
+    }).then(function (r) {
+      if (r.status === 401 || r.status === 403) {
+        var err = new Error("口令错误或无删除权限。");
+        err.code = "AUTH";
+        throw err;
+      }
+      if (!r.ok) {
+        return r.text().then(function (t) {
+          throw new Error("Supabase HTTP " + r.status + (t ? " " + t : ""));
+        });
+      }
+      return r.json().then(function (deletedRows) {
+        if (!Array.isArray(deletedRows) || deletedRows.length === 0) {
+          throw new Error(
+            "数据库未删除任何记录。请确认已执行允许管理员删除的 Supabase SQL 策略。"
+          );
+        }
+        return deletedRows[0];
+      });
+    });
+  }
+
   // ─── 状态：当前已加载的报名行 ───────────────────────────────
   var state = {
     rows: [],
@@ -321,6 +359,15 @@
           "<td class=\"reg-cell-id\">" +
           idDisplay +
           "</td>" +
+          "<td class=\"reg-cell-actions\">" +
+          "<button type=\"button\" class=\"reg-delete-btn\" data-reg-delete-id=\"" +
+          escapeHtml(r.id) +
+          "\" data-reg-delete-name=\"" +
+          escapeHtml(r.name || "") +
+          "\" data-reg-delete-time=\"" +
+          escapeHtml(formatDateTime(r.created_at)) +
+          "\">删除</button>" +
+          "</td>" +
           "</tr>"
         );
       })
@@ -460,6 +507,51 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+  function handleDeleteClick(btn) {
+    var id = btn && btn.getAttribute("data-reg-delete-id");
+    if (!id) return;
+    var name = btn.getAttribute("data-reg-delete-name") || "该学员";
+    var time = btn.getAttribute("data-reg-delete-time") || "";
+    var ok = window.confirm(
+      "确定删除这条报名记录吗？\n\n姓名：" +
+        name +
+        (time ? "\n提交时间：" + time : "") +
+        "\n\n删除后无法在后台恢复，请先确认已导出或无需保留。"
+    );
+    if (!ok) return;
+
+    var secret = getSecret();
+    btn.disabled = true;
+    btn.textContent = "删除中…";
+    showRegStatus("正在删除报名记录…", "loading");
+    deleteRegistration(secret, id)
+      .then(function () {
+        state.rows = state.rows.filter(function (row) {
+          return String(row.id) !== String(id);
+        });
+        renderStats();
+        renderRows();
+        showRegStatus("已删除报名记录。");
+      })
+      .catch(function (err) {
+        if (err && err.code === "AUTH") {
+          handleLogout();
+          var lerr = $("adm-login-error");
+          if (lerr) {
+            lerr.textContent = "口令已失效，请重新登录。";
+            lerr.hidden = false;
+          }
+          return;
+        }
+        btn.disabled = false;
+        btn.textContent = "删除";
+        showRegStatus(
+          "删除失败：" + (err && err.message ? err.message : err),
+          "error"
+        );
+      });
   }
 
   // ─── 登录 / 退出 ─────────────────────────────────────────────
@@ -606,6 +698,20 @@
 
     var btnDl = $("adm-btn-download-all");
     if (btnDl) btnDl.addEventListener("click", downloadAllCsv);
+
+    var regTbody = $("adm-reg-tbody");
+    if (regTbody) {
+      regTbody.addEventListener("click", function (e) {
+        var target = e.target;
+        if (
+          target &&
+          target.matches &&
+          target.matches("[data-reg-delete-id]")
+        ) {
+          handleDeleteClick(target);
+        }
+      });
+    }
 
     var ths = document.querySelectorAll("#adm-reg-table thead th[data-sort-key]");
     for (var i = 0; i < ths.length; i++) {

@@ -3,7 +3,7 @@
 -- 说明：
 --   1. 任何人可以从前台报名页提交（INSERT）—— 匿名写入
 --   2. 只有携带正确管理口令 header 的请求可以读取报名（SELECT）—— 后台查看
---   3. 永远禁止匿名 UPDATE / DELETE
+--   3. 只有携带正确管理口令 header 的请求可以删除报名（DELETE）—— 后台清理误提交/测试记录
 --
 -- 安全模型：
 --   - 口令只在数据库 is_admin_request() 函数里维护，前端 JS 看不到
@@ -104,7 +104,17 @@ create policy "管理员凭口令读取报名"
   using (public.is_admin_request());
 
 -- ---------------------------------------------------------------------------
--- 5) 学员自助查询 RPC：按姓名 + 身份证后 6 位返回有限字段
+-- 5) 策略：管理员凭口令删除（admin.html）
+-- ---------------------------------------------------------------------------
+drop policy if exists "管理员凭口令删除报名" on public.registrations;
+create policy "管理员凭口令删除报名"
+  on public.registrations
+  for delete
+  to anon
+  using (public.is_admin_request());
+
+-- ---------------------------------------------------------------------------
+-- 6) 学员自助查询 RPC：按姓名 + 身份证后 6 位返回有限字段
 --    不给 anon 开表级 SELECT，避免整表被读取。
 -- ---------------------------------------------------------------------------
 drop function if exists public.query_registration_status(text, text);

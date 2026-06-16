@@ -102,6 +102,7 @@
                 <th data-sort-key="art_base" scope="col">基础</th>
                 <th scope="col">健康声明</th>
                 <th data-sort-key="id_last6" scope="col">身份证号</th>
+                <th scope="col">操作</th>
               </tr>
             </thead>
             <tbody id="adm-reg-tbody"></tbody>
@@ -137,7 +138,8 @@
           <ol class="admin-steps">
             <li>报名总览数据实时来源于 Supabase 数据库；本页不另存任何报名信息，关闭页面无影响。</li>
             <li>需要离线归档或同步到腾讯表格，点「下载全部 CSV」即可，腾讯表格中走 <strong>文件 → 导入</strong>。</li>
-            <li>学员自助查询页 <code>query.html</code> 仍依赖 <code>data/students.json</code>；可用下方「TSV → JSON」维护后再次发布站点。</li>
+            <li>误提交或测试报名可在总览表格中点「删除」清理；删除前建议先导出 CSV 备份。</li>
+            <li>学员自助查询页 <code>query.html</code> 优先读 Supabase RPC，备用 <code>data/students.json</code>。</li>
           </ol>
         </section>
       </div>

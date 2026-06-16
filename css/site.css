@@ -1815,6 +1815,34 @@ select.form-input option {
   white-space: nowrap;
 }
 
+.reg-cell-actions {
+  white-space: nowrap;
+}
+
+.reg-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 50, 58, 0.42);
+  background: rgba(168, 50, 58, 0.08);
+  color: #b73a3a;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.reg-delete-btn:hover {
+  background: rgba(168, 50, 58, 0.16);
+}
+
+.reg-delete-btn:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
 .reg-table a {
   color: var(--color-mineral);
   text-decoration: none;

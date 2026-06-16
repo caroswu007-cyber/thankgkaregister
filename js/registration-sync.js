@@ -27,7 +27,7 @@
   }
 
   function buildPayload(data, idHash) {
-    return {
+    var row = {
       name: data.name,
       phone: data.phone,
       wechat: data.wechat,
@@ -44,6 +44,29 @@
       id_hash: idHash,
       submitted_at: new Date().toISOString(),
     };
+
+    if (data.idType) row.id_type = data.idType;
+    if (data.contactAddress) row.contact_address = data.contactAddress;
+    if (typeof data.needsLodging === "boolean") {
+      row.needs_lodging = data.needsLodging;
+    }
+    if (data.emergencyName) row.emergency_name = data.emergencyName;
+    if (data.emergencyPhone) row.emergency_phone = data.emergencyPhone;
+    if (data.emergencyRelation) row.emergency_relation = data.emergencyRelation;
+    if (typeof data.agreeHealthDeclaration === "boolean") {
+      row.agree_health_declaration = data.agreeHealthDeclaration;
+    }
+    if (typeof data.agreeHealthQuestionnaire === "boolean") {
+      row.agree_health_questionnaire = data.agreeHealthQuestionnaire;
+    }
+    if (typeof data.agreeConductRules === "boolean") {
+      row.agree_conduct_rules = data.agreeConductRules;
+    }
+    if (data.healthAnswers) {
+      row.health_answers = data.healthAnswers;
+    }
+
+    return row;
   }
 
   function supabaseRestHeaders(apiKey) {

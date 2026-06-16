@@ -31,7 +31,17 @@ create table if not exists public.registrations (
   id_card text not null,
   id_last6 text not null,
   id_hash text not null,
-  submitted_at timestamptz not null
+  submitted_at timestamptz not null,
+  id_type text,
+  contact_address text,
+  needs_lodging boolean,
+  emergency_name text,
+  emergency_phone text,
+  emergency_relation text,
+  agree_health_declaration boolean,
+  agree_health_questionnaire boolean,
+  agree_conduct_rules boolean,
+  health_answers jsonb
 );
 
 alter table public.registrations enable row level security;

@@ -98,6 +98,245 @@ body {
     auto;
 }
 
+.page-register--thangka {
+  background-image:
+    linear-gradient(180deg, rgba(8, 10, 14, 0.72) 0%, rgba(8, 10, 14, 0.82) 42%, rgba(5, 6, 8, 0.94) 100%),
+    radial-gradient(ellipse 60% 36% at 50% 18%, rgba(201, 164, 74, 0.16), transparent 68%),
+    url("../images/register-bg-thangka.png"),
+    linear-gradient(180deg, #020304 0%, #07090d 48%, #0b0f18 100%);
+  background-position: center, center, center top, center;
+  background-size: auto, auto, cover, auto;
+}
+
+.page-home-minimal .grand-hero--logo-only {
+  min-height: min(78vh, 720px);
+  min-height: min(78dvh, 720px);
+}
+
+.page-home-minimal .grand-logo-ring--hero {
+  width: clamp(168px, 42vw, 240px);
+  height: clamp(168px, 42vw, 240px);
+  margin: 0 0 1rem;
+}
+
+.page-home-minimal .grand-logo-ring--hero img {
+  width: 82%;
+  height: 82%;
+}
+
+.page-home-minimal .grand-brand-name {
+  margin: 0;
+  font-family: var(--font-classical);
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  letter-spacing: 0.22em;
+  color: #fff;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.75);
+}
+
+.page-home-minimal .grand-actions,
+.page-home-minimal .grand-title,
+.page-home-minimal .grand-lead,
+.page-home-minimal .grand-eyebrow {
+  display: none;
+}
+
+.grand-about {
+  padding: clamp(1.75rem, 6vw, 2.5rem) clamp(1.1rem, 5vw, 1.75rem) 0;
+}
+
+.grand-about-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(201, 164, 74, 0.18);
+  background: rgba(15, 20, 31, 0.6);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .grand-about-card {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.form-input[readonly] {
+  opacity: 0.92;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.check-label--inline {
+  align-items: center;
+}
+
+.doc-scroll-panel {
+  max-height: 280px;
+  overflow: auto;
+  margin: 0 0 1rem;
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.doc-scroll-panel--tall {
+  max-height: 360px;
+}
+
+.doc-panel-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--color-gold-bright);
+  letter-spacing: 0.08em;
+}
+
+.doc-ordered {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.doc-ordered li {
+  margin-bottom: 0.35rem;
+}
+
+.doc-details {
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.doc-details summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-gold-bright);
+}
+
+.doc-details .doc-scroll-panel {
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+  max-height: 320px;
+}
+
+.form-subsection {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--color-gold-soft);
+}
+
+.form-subsection-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-subsection-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--color-gold-bright);
+  letter-spacing: 0.06em;
+}
+
+.btn-small {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+}
+
+.health-questionnaire {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.health-q-item {
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.health-q-label {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  margin-bottom: 0.45rem;
+}
+
+.course-intro-panel {
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.course-intro-lead {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  color: var(--color-gold-bright);
+  letter-spacing: 0.06em;
+}
+
+.course-intro-facts {
+  margin: 0 0 1.25rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.course-intro-facts dt {
+  display: inline;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-gold-dark);
+}
+
+.course-intro-facts dt::after {
+  content: "：";
+}
+
+.course-intro-facts dd {
+  display: inline;
+  margin: 0;
+}
+
+.course-intro-rules {
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.65;
+}
+
+.course-intro-rules li {
+  margin-bottom: 0.45rem;
+}
+
+.course-intro-note {
+  margin: 1rem 0 0;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
 .page-query {
   background-image:
     linear-gradient(180deg, rgba(2, 3, 4, 0.58) 0%, rgba(5, 7, 11, 0.74) 48%, rgba(5, 6, 8, 0.94) 100%),

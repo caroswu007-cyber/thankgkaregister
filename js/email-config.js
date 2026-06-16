@@ -44,7 +44,6 @@ window.TangkaEmailConfig = {
 
   /** 固定课程文案（模板与代码共用） */
   courseName: "唐卡传承公益体验课",
-  courseDates: "2026年4月8日 — 4月12日（共五天）",
-  coursePlace:
-    "广东 · 深圳市龙岗区横岗新园路88号 · 东方字礼文化美愈康养基地",
+  courseDates: "2026年7月3日 — 7月9日（共七天）",
+  coursePlace: "惠州博罗县埔筏村山祥湖小组42号 · 菩提画院",
 };

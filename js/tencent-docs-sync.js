@@ -6,18 +6,24 @@
   /** 与邮件 / 导出 CSV 对齐的列顺序（勿轻易改列名，便于一期一期沿用） */
   var SHEET_HEADERS = [
     "姓名",
-    "身份证号",
+    "证件类型",
+    "证件号码",
     "手机号",
     "微信号",
     "年龄",
     "电子邮箱",
     "性别",
     "所在城市",
+    "联系地址",
+    "需要住宿",
+    "紧急联系人",
+    "紧急联系人电话",
+    "与申请人关系",
     "绘画基础",
     "家属同意",
     "身体健康声明",
     "知晓活动规则",
-    "身份证SHA256",
+    "证件SHA256",
     "提交时间",
   ];
 
@@ -31,6 +37,7 @@
     };
     var cells = [
       data.name || "",
+      data.idType || "",
       data.idCard || "",
       data.phone || "",
       data.wechat || "",
@@ -38,6 +45,11 @@
       data.email || "",
       data.gender || "",
       data.city || "",
+      data.contactAddress || "",
+      data.needsLodging ? "是" : "否",
+      data.emergencyName || "",
+      data.emergencyPhone || "",
+      data.emergencyRelation || "",
       data.artBase || "",
       yn(data.healthFamily),
       yn(data.healthBody),

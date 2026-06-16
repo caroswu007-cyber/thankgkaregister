@@ -23,6 +23,32 @@
     return checkCodes.charAt(idx) === s.charAt(17);
   }
 
+  function ageFromChineseId(id) {
+    var s = String(id || "")
+      .trim()
+      .toUpperCase();
+    if (!/^\d{17}[\dX]$/.test(s)) return null;
+    var y = parseInt(s.substring(6, 10), 10);
+    var m = parseInt(s.substring(10, 12), 10) - 1;
+    var d = parseInt(s.substring(12, 14), 10);
+    if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) {
+      return null;
+    }
+    var birth = new Date(y, m, d);
+    if (
+      birth.getFullYear() !== y ||
+      birth.getMonth() !== m ||
+      birth.getDate() !== d
+    ) {
+      return null;
+    }
+    var today = new Date();
+    var age = today.getFullYear() - y;
+    var md = today.getMonth() - m;
+    if (md < 0 || (md === 0 && today.getDate() < d)) age -= 1;
+    return age;
+  }
+
   function validatePhone(p) {
     return /^1\d{10}$/.test(String(p || "").trim());
   }
@@ -94,20 +120,149 @@
     }
   }
 
+  function getIdType() {
+    var el = $("field-id-type");
+    return el ? String(el.value || "身份证") : "身份证";
+  }
+
+  function syncAgeFromIdCard() {
+    var ageEl = $("field-age");
+    var hintEl = $("age-hint");
+    var idType = getIdType();
+    if (!ageEl) return;
+
+    if (idType === "身份证") {
+      ageEl.readOnly = true;
+      if (hintEl) {
+        hintEl.textContent = "已根据身份证号码自动计算年龄。";
+      }
+      var idCard =
+        ($("field-id-card") && $("field-id-card").value.trim().toUpperCase()) ||
+        "";
+      var age = ageFromChineseId(idCard);
+      ageEl.value = age != null && age >= 0 ? String(age) : "";
+    } else {
+      ageEl.readOnly = false;
+      if (hintEl) {
+        hintEl.textContent = "护照或其他证件请手动填写年龄（周岁）。";
+      }
+    }
+  }
+
+  function syncIdCardPlaceholder() {
+    var idType = getIdType();
+    var input = $("field-id-card");
+    if (!input) return;
+    if (idType === "身份证") {
+      input.placeholder = "18 位二代身份证号码";
+      input.maxLength = 18;
+      input.inputMode = "numeric";
+    } else if (idType === "护照") {
+      input.placeholder = "护照号码";
+      input.maxLength = 30;
+      input.inputMode = "text";
+    } else {
+      input.placeholder = "证件号码";
+      input.maxLength = 30;
+      input.inputMode = "text";
+    }
+  }
+
+  function toggleLodgingSection() {
+    var needs = $("field-needs-lodging") && $("field-needs-lodging").checked;
+    var section = $("lodging-rules-section");
+    var agree = $("agree-conduct-rules");
+    if (section) section.hidden = !needs;
+    if (!needs && agree) agree.checked = false;
+  }
+
+  function renderHealthQuestionnaire() {
+    var wrap = $("health-questionnaire");
+    var docs = window.TangkaRegisterDocuments;
+    if (!wrap || !docs || !docs.HEALTH_QUESTIONS) return;
+
+    var html = "";
+    docs.HEALTH_QUESTIONS.forEach(function (q, idx) {
+      html +=
+        '<fieldset class="health-q-item" data-health-key="' +
+        q.key +
+        '">' +
+        '<legend class="health-q-label">' +
+        (idx + 1) +
+        ". " +
+        q.label +
+        ' <span class="req">*</span></legend>' +
+        '<div class="radio-row">' +
+        '<label class="radio-label"><input type="radio" name="' +
+        q.key +
+        '" value="是" /> 是 / 有</label>' +
+        '<label class="radio-label"><input type="radio" name="' +
+        q.key +
+        '" value="否" /> 否 / 无</label>' +
+        "</div></fieldset>";
+    });
+    wrap.innerHTML = html;
+  }
+
+  function openHealthQuestionnaire() {
+    var wrap = $("health-questionnaire");
+    var confirmWrap = $("health-form-confirm-wrap");
+    var btn = $("btn-open-health-form");
+    if (!wrap) return;
+    wrap.hidden = false;
+    if (confirmWrap) confirmWrap.hidden = false;
+    if (btn) btn.textContent = "已展开";
+    wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function collectHealthAnswers() {
+    var docs = window.TangkaRegisterDocuments;
+    var out = {};
+    if (!docs || !docs.HEALTH_QUESTIONS) return out;
+    docs.HEALTH_QUESTIONS.forEach(function (q) {
+      var el = document.querySelector('input[name="' + q.key + '"]:checked');
+      out[q.key] = el ? el.value : "";
+    });
+    return out;
+  }
+
+  function validateHealthQuestionnaire() {
+    var docs = window.TangkaRegisterDocuments;
+    if (!docs || !docs.HEALTH_QUESTIONS) return true;
+    for (var i = 0; i < docs.HEALTH_QUESTIONS.length; i++) {
+      var key = docs.HEALTH_QUESTIONS[i].key;
+      var el = document.querySelector('input[name="' + key + '"]:checked');
+      if (!el) {
+        showFieldError(
+          "health-questionnaire",
+          "请完整填写健康状况声明表（第 " + (i + 1) + " 题尚未选择）"
+        );
+        return false;
+      }
+    }
+    return true;
+  }
+
   function buildAdminPlain(cfg, data, idSha256) {
     var lines = [
       "【新报名】" + cfg.courseName,
       "提交时间：" + data.submittedAt,
       "",
       "姓名：" + data.name,
+      "证件类型：" + data.idType,
+      "证件号码：" + data.idCard,
       "手机号：" + data.phone,
       "微信号：" + data.wechat,
       "邮箱：" + data.email,
       "年龄：" + data.age,
       "性别：" + data.gender,
       "城市：" + data.city,
+      "联系地址：" + data.contactAddress,
+      "需要住宿：" + (data.needsLodging ? "是" : "否"),
       "绘画基础：" + data.artBase,
-      "身份证号：" + data.idCard,
+      "紧急联系人：" + data.emergencyName,
+      "紧急联系人电话：" + data.emergencyPhone,
+      "与申请人关系：" + data.emergencyRelation,
       "身份证SHA256：" + idSha256,
       "",
       "健康声明（家属同意 / 身体声明 / 知晓规则）：",
@@ -115,31 +270,64 @@
       data.healthBody ? "✓ 身体健康声明" : "✗",
       data.healthRules ? "✓ 知晓活动规则" : "✗",
       "",
+      "健康状况声明表：",
+    ];
+    var hq = data.healthAnswers || {};
+    Object.keys(hq).forEach(function (k) {
+      lines.push(k + "：" + hq[k]);
+    });
+    lines.push(
+      "",
       "—— 以下为腾讯表格粘贴行（Tab 分隔）——",
       window.TangkaTencentDocs.buildHeadersLine(),
       window.TangkaTencentDocs.buildPasteRow(
         Object.assign({}, data, { idSha256: idSha256 })
-      ),
-    ];
+      )
+    );
     return lines.join("\n");
   }
 
   function collectAndValidate() {
     var name = ($("field-name") && $("field-name").value.trim()) || "";
+    var idType = getIdType();
+    var idCardRaw =
+      ($("field-id-card") && $("field-id-card").value.trim()) || "";
     var idCard =
-      ($("field-id-card") && $("field-id-card").value.trim().toUpperCase()) ||
-      "";
+      idType === "身份证" ? idCardRaw.toUpperCase() : idCardRaw;
     var phone = ($("field-phone") && $("field-phone").value.trim()) || "";
     var wechat = ($("field-wechat") && $("field-wechat").value.trim()) || "";
     var ageRaw = ($("field-age") && $("field-age").value.trim()) || "";
     var email = ($("field-email") && $("field-email").value.trim()) || "";
     var city = ($("field-city") && $("field-city").value.trim()) || "";
+    var contactAddress =
+      ($("field-address") && $("field-address").value.trim()) || "";
+    var needsLodging =
+      $("field-needs-lodging") && $("field-needs-lodging").checked;
+    var emergencyName =
+      ($("field-emergency-name") && $("field-emergency-name").value.trim()) ||
+      "";
+    var emergencyPhone =
+      ($("field-emergency-phone") &&
+        $("field-emergency-phone").value.trim()) ||
+      "";
+    var emergencyRelation =
+      ($("field-emergency-relation") &&
+        $("field-emergency-relation").value.trim()) ||
+      "";
 
     var genderEl = document.querySelector('input[name="gender"]:checked');
     var gender = genderEl ? genderEl.value : "";
 
     var artEl = document.querySelector('input[name="art_base"]:checked');
     var artBase = artEl ? artEl.value : "";
+
+    var agreeHealthDeclaration =
+      $("agree-health-declaration") && $("agree-health-declaration").checked;
+    var agreeHealthQuestionnaire =
+      $("agree-health-questionnaire") &&
+      $("agree-health-questionnaire").checked;
+    var agreeConductRules =
+      $("agree-conduct-rules") && $("agree-conduct-rules").checked;
 
     var healthFamily = $("health-family") && $("health-family").checked;
     var healthBody = $("health-body") && $("health-body").checked;
@@ -151,10 +339,17 @@
       showFieldError("name", "请填写姓名");
       ok = false;
     }
-    if (!validateChineseIdCard(idCard)) {
-      showFieldError("id-card", "请输入正确的 18 位身份证号码");
+
+    if (idType === "身份证") {
+      if (!validateChineseIdCard(idCard)) {
+        showFieldError("id-card", "请输入正确的 18 位身份证号码");
+        ok = false;
+      }
+    } else if (!idCard || idCard.length < 4) {
+      showFieldError("id-card", "请填写有效的证件号码");
       ok = false;
     }
+
     if (!validatePhone(phone)) {
       showFieldError("phone", "请输入 11 位中国大陆手机号");
       ok = false;
@@ -163,7 +358,9 @@
       showFieldError("wechat", "请填写微信号");
       ok = false;
     }
-    var age = parseInt(ageRaw, 10);
+
+    syncAgeFromIdCard();
+    var age = parseInt(($("field-age") && $("field-age").value) || ageRaw, 10);
     if (!Number.isFinite(age) || age < 16) {
       showFieldError("age", "年龄须为不少于 16 周岁的整数");
       ok = false;
@@ -180,8 +377,48 @@
       showFieldError("city", "请填写所在城市");
       ok = false;
     }
+    if (!contactAddress) {
+      showFieldError("address", "请填写联系地址");
+      ok = false;
+    }
     if (!artBase) {
       showFieldError("art-base", "请选择是否有绘画基础");
+      ok = false;
+    }
+    if (!emergencyName) {
+      showFieldError("emergency-name", "请填写紧急联系人姓名");
+      ok = false;
+    }
+    if (!emergencyPhone || emergencyPhone.length < 6) {
+      showFieldError("emergency-phone", "请填写有效的紧急联系人电话");
+      ok = false;
+    }
+    if (!emergencyRelation) {
+      showFieldError("emergency-relation", "请填写与申请人的关系");
+      ok = false;
+    }
+    if (!agreeHealthDeclaration) {
+      showFieldError(
+        "health-declaration",
+        "请阅读《申请者健康问题》特别声明并勾选确认"
+      );
+      ok = false;
+    }
+    if (!validateHealthQuestionnaire()) {
+      ok = false;
+    }
+    if (!agreeHealthQuestionnaire) {
+      showFieldError(
+        "health-questionnaire-agree",
+        "请勾选健康状况声明表底部的确认声明"
+      );
+      ok = false;
+    }
+    if (needsLodging && !agreeConductRules) {
+      showFieldError(
+        "conduct-rules",
+        "选择住宿须阅读并同意《修行与自律 · 行为规范》"
+      );
       ok = false;
     }
     if (!healthFamily || !healthBody || !healthRules) {
@@ -193,6 +430,7 @@
 
     return {
       name: name,
+      idType: idType,
       idCard: idCard,
       phone: phone,
       wechat: wechat,
@@ -200,7 +438,16 @@
       email: email,
       gender: gender,
       city: city,
+      contactAddress: contactAddress,
+      needsLodging: needsLodging,
+      emergencyName: emergencyName,
+      emergencyPhone: emergencyPhone,
+      emergencyRelation: emergencyRelation,
       artBase: artBase,
+      agreeHealthDeclaration: agreeHealthDeclaration,
+      agreeHealthQuestionnaire: agreeHealthQuestionnaire,
+      agreeConductRules: needsLodging ? agreeConductRules : false,
+      healthAnswers: collectHealthAnswers(),
       healthFamily: healthFamily,
       healthBody: healthBody,
       healthRules: healthRules,
@@ -208,10 +455,21 @@
     };
   }
 
+  function initDocuments() {
+    var docs = window.TangkaRegisterDocuments;
+    if (!docs) return;
+    var healthDoc = $("health-declaration-doc");
+    var conductDoc = $("conduct-rules-doc");
+    if (healthDoc) healthDoc.innerHTML = docs.HEALTH_DECLARATION_HTML;
+    if (conductDoc) conductDoc.innerHTML = docs.CONDUCT_RULES_HTML;
+    renderHealthQuestionnaire();
+  }
+
   function bindRegisterPage() {
+    initDocuments();
+
     var closedPanel = $("register-closed");
     var form = $("register-form");
-    var cfgHint = $("emailjs-config-hint");
 
     if (!window.TangkaSite || !window.TangkaSite.canRegister()) {
       if (closedPanel) closedPanel.hidden = false;
@@ -222,14 +480,39 @@
     if (closedPanel) closedPanel.hidden = true;
     if (form) form.hidden = false;
 
-    var cfgPre = window.TangkaEmailConfig || {};
-    if (cfgHint) {
-      var syncOn =
-        window.TangkaRegistrationSync &&
-        window.TangkaRegistrationSync.isEnabled();
-      cfgHint.hidden = isEmailConfigured() || syncOn;
+    var idTypeEl = $("field-id-type");
+    var idCardEl = $("field-id-card");
+    var lodgingEl = $("field-needs-lodging");
+    var healthBtn = $("btn-open-health-form");
+
+    if (idTypeEl) {
+      idTypeEl.addEventListener("change", function () {
+        syncIdCardPlaceholder();
+        syncAgeFromIdCard();
+      });
+    }
+    if (idCardEl) {
+      idCardEl.addEventListener("input", syncAgeFromIdCard);
+      idCardEl.addEventListener("blur", syncAgeFromIdCard);
+    }
+    if (lodgingEl) {
+      lodgingEl.addEventListener("change", toggleLodgingSection);
+    }
+    if (healthBtn) {
+      healthBtn.addEventListener("click", openHealthQuestionnaire);
+    }
+    var agreeHealthDoc = $("agree-health-declaration");
+    if (agreeHealthDoc) {
+      agreeHealthDoc.addEventListener("change", function () {
+        if (agreeHealthDoc.checked) openHealthQuestionnaire();
+      });
     }
 
+    syncIdCardPlaceholder();
+    syncAgeFromIdCard();
+    toggleLodgingSection();
+
+    var cfgPre = window.TangkaEmailConfig || {};
     if (
       cfgPre &&
       isEmailConfigured() &&
@@ -314,7 +597,7 @@
           course_dates: cfg.courseDates,
           course_place: cfg.coursePlace,
           tips_short:
-            "请查收本邮件；可同时留意手机短信与微信「升莲」好友通知（若有）。",
+            "请查收本邮件；可同时留意手机短信与微信通知（若有）。",
         };
         return emailjs.send(
           cfg.serviceId,

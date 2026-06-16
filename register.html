@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/site.css" />
 </head>
-<body class="page-register">
+<body class="page-register page-register--thangka">
   <a class="skip-link" href="#main">跳到主要内容</a>
 
   <header class="site-header">
@@ -22,7 +22,7 @@
         </span>
       </a>
       <nav class="site-nav" aria-label="主导航">
-        <a href="index.html">课程列表</a>
+        <a href="index.html">首页</a>
         <a href="register.html" aria-current="page">课程报名</a>
         <a href="query.html">学员查询</a>
       </nav>
@@ -31,26 +31,22 @@
 
   <main id="main" class="main-wrap main-wrap--form main-wrap--wide">
     <header class="page-strip form-page-header">
-      <div class="form-hero-icon" aria-hidden="true">
-        <img src="images/hero-lotus.svg" alt="" width="96" height="96" class="hero-mandala hero-mandala--small" loading="lazy" />
-      </div>
-      <h1 class="form-page-title">学员申请</h1>
+      <h1 class="form-page-title">课程报名</h1>
       <p class="form-page-lead">请确认课程信息并如实填写报名表。提交成功后系统将发送确认邮件至您填写的邮箱，报名信息自动归档，工作人员将按顺序审核联系。</p>
     </header>
 
     <div class="course-confirm" aria-label="所报课程">
       <h2 class="course-confirm-title">您正在申请</h2>
       <dl>
-        <div><dt>课程</dt><dd>唐卡传承公益体验课（佛像绘画 · 唐卡）</dd></div>
-        <div><dt>时间</dt><dd>2026 年 4 月 8 日 — 4 月 12 日（共五天）</dd></div>
-        <div><dt>地点</dt><dd>广东 · 深圳市龙岗区横岗新园路 88 号 · 东方字礼文化美愈康养基地</dd></div>
-        <div><dt>讲师</dt><dd>赵盛华居士</dd></div>
+        <div><dt>课程</dt><dd>唐卡传承公益体验课</dd></div>
+        <div><dt>时间</dt><dd>2026 年 7 月 3 日 — 7 月 9 日（共七天）</dd></div>
+        <div><dt>地点</dt><dd>惠州博罗县埔筏村山祥湖小组 42 号 · 菩提画院</dd></div>
       </dl>
     </div>
 
     <div id="register-closed" class="alert-panel alert-panel--warn" hidden>
-      <p><strong>当前无法在线报名</strong>（报名已截止或名额已满）。如需咨询请返回课程列表查看联系方式。</p>
-      <p><a class="btn btn-secondary" href="index.html">返回课程列表</a></p>
+      <p><strong>当前无法在线报名</strong>（报名已截止或名额已满）。如需咨询请返回首页查看联系方式。</p>
+      <p><a class="btn btn-secondary" href="index.html">返回首页</a></p>
     </div>
 
     <div id="form-error-top" class="alert-panel alert-panel--error" role="alert" hidden></div>
@@ -61,15 +57,39 @@
 
         <div class="form-field">
           <label class="form-label" for="field-name">姓名 <span class="req">*</span></label>
-          <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required maxlength="40" />
+          <input class="form-input" type="text" id="field-name" name="name" autocomplete="name" required maxlength="40" placeholder="您的身份证件上的姓名" />
           <p class="field-error" id="err-name" hidden role="status"></p>
         </div>
 
-        <div class="form-field">
-          <label class="form-label" for="field-id-card">身份证号 <span class="req">*</span></label>
-          <input class="form-input" type="text" id="field-id-card" name="id_card" inputmode="numeric" autocomplete="off" maxlength="18" placeholder="18 位二代身份证号码" />
-          <p class="form-hint">用于学员自助查询核对；信息仅用于本次课程报名与联系，不向无关第三方传输。</p>
-          <p class="field-error" id="err-id-card" hidden role="status"></p>
+        <div class="form-field-group">
+          <div class="form-field">
+            <label class="form-label" for="field-id-type">证件类型 <span class="req">*</span></label>
+            <select class="form-input" id="field-id-type" name="id_type">
+              <option value="身份证">身份证</option>
+              <option value="护照">护照</option>
+              <option value="其他">其他</option>
+            </select>
+            <p class="field-error" id="err-id-type" hidden role="status"></p>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="field-id-card">证件号码 <span class="req">*</span></label>
+            <input class="form-input" type="text" id="field-id-card" name="id_card" autocomplete="off" maxlength="30" placeholder="18 位二代身份证号码" />
+            <p class="field-error" id="err-id-card" hidden role="status"></p>
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <div class="form-field">
+            <label class="form-label" for="field-age">年龄 <span class="req">*</span></label>
+            <input class="form-input" type="number" id="field-age" name="age" inputmode="numeric" min="16" max="120" placeholder="周岁，须 ≥16" />
+            <p class="form-hint" id="age-hint">选择身份证时将根据证件号码自动计算年龄。</p>
+            <p class="field-error" id="err-age" hidden role="status"></p>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="field-email">电子邮箱 <span class="req">*</span></label>
+            <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" maxlength="80" placeholder="用于接收确认邮件" />
+            <p class="field-error" id="err-email" hidden role="status"></p>
+          </div>
         </div>
 
         <div class="form-field-group">
@@ -85,33 +105,32 @@
           </div>
         </div>
 
-        <div class="form-field-group">
-          <div class="form-field">
-            <label class="form-label" for="field-age">年龄 <span class="req">*</span></label>
-            <input class="form-input" type="number" id="field-age" name="age" inputmode="numeric" min="16" max="120" placeholder="周岁，须 ≥16" />
-            <p class="field-error" id="err-age" hidden role="status"></p>
-          </div>
-          <div class="form-field">
-            <label class="form-label" for="field-email">电子邮箱 <span class="req">*</span></label>
-            <input class="form-input" type="email" id="field-email" name="email" autocomplete="email" maxlength="80" placeholder="用于接收确认邮件" />
-            <p class="field-error" id="err-email" hidden role="status"></p>
-          </div>
-        </div>
-
         <fieldset class="form-field form-field--radios">
           <legend class="form-label">性别 <span class="req">*</span></legend>
           <div class="radio-row">
             <label class="radio-label"><input type="radio" name="gender" value="男" /> 男</label>
             <label class="radio-label"><input type="radio" name="gender" value="女" /> 女</label>
-            <label class="radio-label"><input type="radio" name="gender" value="不便填写" /> 不便填写</label>
           </div>
           <p class="field-error" id="err-gender" hidden role="status"></p>
         </fieldset>
 
         <div class="form-field">
           <label class="form-label" for="field-city">所在城市 <span class="req">*</span></label>
-          <input class="form-input" type="text" id="field-city" name="city" autocomplete="address-level2" maxlength="40" placeholder="例如：深圳市" />
+          <input class="form-input" type="text" id="field-city" name="city" autocomplete="address-level2" maxlength="40" placeholder="例如：惠州市" />
           <p class="field-error" id="err-city" hidden role="status"></p>
+        </div>
+
+        <div class="form-field">
+          <label class="check-label check-label--inline">
+            <input type="checkbox" id="field-needs-lodging" name="needs_lodging" />
+            需要住宿（勾选后将显示《修行与自律 · 行为规范》，须阅读并同意）
+          </label>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-address">联系地址 <span class="req">*</span></label>
+          <input class="form-input" type="text" id="field-address" name="contact_address" autocomplete="street-address" maxlength="120" placeholder="详细通讯地址，便于课程联系" />
+          <p class="field-error" id="err-address" hidden role="status"></p>
         </div>
 
         <fieldset class="form-field form-field--radios">
@@ -125,12 +144,78 @@
       </div>
 
       <div class="form-section">
+        <h2 class="form-section-title">紧急联系人</h2>
+        <p class="form-hint">请填写一位可在课程期间紧急联系的直系亲属或近亲。</p>
+
+        <div class="form-field">
+          <label class="form-label" for="field-emergency-name">紧急联系人姓名 <span class="req">*</span></label>
+          <input class="form-input" type="text" id="field-emergency-name" name="emergency_name" maxlength="40" placeholder="直系亲属姓名" />
+          <p class="field-error" id="err-emergency-name" hidden role="status"></p>
+        </div>
+
+        <div class="form-field-group">
+          <div class="form-field">
+            <label class="form-label" for="field-emergency-phone">紧急联系人电话 <span class="req">*</span></label>
+            <input class="form-input" type="tel" id="field-emergency-phone" name="emergency_phone" maxlength="20" placeholder="便于我们联系他/她" />
+            <p class="field-error" id="err-emergency-phone" hidden role="status"></p>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="field-emergency-relation">与申请人关系 <span class="req">*</span></label>
+            <input class="form-input" type="text" id="field-emergency-relation" name="emergency_relation" maxlength="20" placeholder="例如：父亲、配偶" />
+            <p class="field-error" id="err-emergency-relation" hidden role="status"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="form-section-title">《申请者健康问题》特别声明</h2>
+        <p class="form-hint">请完整阅读下列声明，并在下方勾选确认；随后填写健康状况声明表。</p>
+
+        <div id="health-declaration-doc" class="doc-scroll-panel" tabindex="0" aria-label="申请者健康问题特别声明全文"></div>
+
+        <label class="check-label">
+          <input type="checkbox" id="agree-health-declaration" name="agree_health_declaration" />
+          本人已阅读《申请者健康问题》特别声明，明白无误地知悉、理解全部内容，并同意其中责任免除条件。
+        </label>
+        <p class="field-error" id="err-health-declaration" hidden role="status"></p>
+
+        <div class="form-subsection">
+          <div class="form-subsection-head">
+            <h3 class="form-subsection-title">健康状况声明表</h3>
+            <button type="button" class="btn btn-secondary btn-small" id="btn-open-health-form">展开填写</button>
+          </div>
+          <p class="form-hint">请逐项如实勾选「是/有」或「否/无」，全部填写后方可提交。</p>
+          <div id="health-questionnaire" class="health-questionnaire" hidden></div>
+          <p class="field-error" id="err-health-questionnaire" hidden role="status"></p>
+
+          <label class="check-label" id="health-form-confirm-wrap" hidden>
+            <input type="checkbox" id="agree-health-questionnaire" name="agree_health_questionnaire" />
+            本人在此声明，尽我所知，以上所填写的数据是真实的。我没有隐瞒任何健康问题。我个人将为任何没有提出的问题所造成的问题负责。
+          </label>
+          <p class="field-error" id="err-health-questionnaire-agree" hidden role="status"></p>
+        </div>
+      </div>
+
+      <div id="lodging-rules-section" class="form-section" hidden>
+        <h2 class="form-section-title">住宿 · 修行与自律</h2>
+        <details class="doc-details" open>
+          <summary>展开阅读《修行与自律 · 行为规范》</summary>
+          <div id="conduct-rules-doc" class="doc-scroll-panel doc-scroll-panel--tall"></div>
+        </details>
+        <label class="check-label">
+          <input type="checkbox" id="agree-conduct-rules" name="agree_conduct_rules" />
+          本人已阅读并同意《修行与自律 · 行为规范》全部内容。
+        </label>
+        <p class="field-error" id="err-conduct-rules" hidden role="status"></p>
+      </div>
+
+      <div class="form-section">
         <h2 class="form-section-title">健康与知情声明</h2>
         <div class="rules-summary" role="note">
           <p><strong>报名前请确认您已了解：</strong></p>
           <ul>
             <li>报到日须满 16 周岁，且已征得家属同意。</li>
-            <li>须全程参与五天课程；课程期间手机存放养机场，全天茹素。</li>
+            <li>须全程参与课程；课程期间手机存放养机场，全天茹素。</li>
             <li>须遵守五戒（不杀生、不偷盗、不邪淫、不妄语、不饮酒）。</li>
             <li>请确认身体状况适合参与；如有疑问请先咨询工作人员。</li>
           </ul>
@@ -143,11 +228,11 @@
           </label>
           <label class="check-label">
             <input type="checkbox" id="health-body" name="health_body" />
-            本人确认身体健康状况适合参与五天课程安排（若有慢性疾病已如实评估）。
+            本人确认身体健康状况适合参与课程安排（若有慢性疾病已如实评估）。
           </label>
           <label class="check-label">
             <input type="checkbox" id="health-rules" name="health_rules" />
-            本人已阅读并同意课程规则（全程参与、养机场、茹素、五戒等，见课程列表页「报名前须知」）。
+            本人已阅读并同意课程规则（全程参与、养机场、茹素、五戒等）。
           </label>
         </div>
         <p class="field-error" id="err-health" hidden role="status"></p>
@@ -155,22 +240,38 @@
 
       <div class="form-actions">
         <button type="submit" id="btn-submit" class="btn btn-primary">提交报名</button>
-        <a class="btn btn-secondary" href="index.html">返回课程列表</a>
+        <a class="btn btn-secondary" href="index.html">返回首页</a>
       </div>
-
-      <aside class="form-aside-muted" aria-label="提交说明">
-        <p>提交后：系统将发送确认邮件至您的邮箱，请留意收件箱与垃圾箱。请勿重复提交同一证件报名。</p>
-        <p>报名信息自动归档；管理员可在 <a href="admin.html">管理后台</a> 查看，需要时导出 CSV 备份。如需咨询请返回 <a href="index.html">课程列表</a> 查看微信联系方式。</p>
-      </aside>
     </form>
+
+    <section class="course-intro-panel" aria-labelledby="course-intro-title">
+      <h2 id="course-intro-title" class="form-section-title">课程介绍</h2>
+      <div class="course-intro-body">
+        <p class="course-intro-lead">唐卡传承公益体验课 · 七天沉浸式体验 · 线描设色 · 矿物颜料 · 造像仪轨</p>
+        <dl class="course-intro-facts">
+          <div><dt>时间</dt><dd>2026 年 7 月 3 日 — 7 月 9 日（共七天）</dd></div>
+          <div><dt>地点</dt><dd>惠州博罗县埔筏村山祥湖小组 42 号 · 菩提画院</dd></div>
+          <div><dt>课程</dt><dd>唐卡传承公益体验课</dd></div>
+        </dl>
+        <h3>报名前须知</h3>
+        <ul class="course-intro-rules">
+          <li><strong>年龄与同意</strong> — 报到日须满 16 周岁，并事先征得家属同意。</li>
+          <li><strong>全程参与</strong> — 须全程参加课程，不得无故缺席。</li>
+          <li><strong>清净规则</strong> — 手机存放养机场；全天茹素；遵守五戒。</li>
+          <li><strong>邮件确认</strong> — 报名后请留意邮箱（含垃圾箱）接收确认与通知。</li>
+        </ul>
+        <p class="course-intro-note">具体勾选项以报名表「健康与知情声明」为准；有疑问请微信咨询。</p>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <p>唐卡传承公益体验课 · 东方字礼文化</p>
+    <p>唐卡传承公益体验课 · 菩提画院</p>
     <p>学员申请 · 邮件确认 · 请勿重复提交</p>
   </footer>
 
   <script src="js/site.js"></script>
+  <script src="js/register-documents.js"></script>
   <script src="js/tencent-docs-sync.js"></script>
   <script src="js/email-config.js"></script>
   <script src="js/sync-config.js"></script>

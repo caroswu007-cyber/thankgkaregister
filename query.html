@@ -22,9 +22,10 @@
         </span>
       </a>
       <nav class="site-nav" aria-label="主导航">
-        <a href="index.html">课程列表</a>
+        <a href="index.html">首页</a>
         <a href="register.html">课程报名</a>
         <a href="query.html" aria-current="page">学员查询</a>
+        <a href="about.html">关于我们</a>
       </nav>
     </div>
   </header>
@@ -32,7 +33,7 @@
   <main id="main" class="main-wrap main-wrap--form main-wrap--wide">
     <header class="page-strip form-page-header">
       <h1 class="form-page-title">学员查询</h1>
-      <p class="form-page-lead">请输入报名时登记的<strong>姓名</strong>与<strong>身份证后 6 位</strong>（仅数字），查询本期课程报名状态。</p>
+      <p class="form-page-lead">请输入报名时登记的<strong>姓名</strong>、<strong>证件类型</strong>与<strong>证件号码后 6 位</strong>，查询本期课程报名状态。</p>
     </header>
 
     <form id="query-form" class="register-form" novalidate>
@@ -42,14 +43,24 @@
           <label class="form-label" for="q-name">姓名</label>
           <input class="form-input" type="text" id="q-name" name="name" autocomplete="name" maxlength="40" />
         </div>
-        <div class="form-field">
-          <label class="form-label" for="q-last6">身份证后 6 位</label>
-          <input class="form-input" type="text" id="q-last6" name="id_last6" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6 位数字" />
+        <div class="form-field-group">
+          <div class="form-field">
+            <label class="form-label" for="q-id-type">证件类型</label>
+            <select class="form-input" id="q-id-type" name="id_type">
+              <option value="身份证">身份证</option>
+              <option value="护照">护照</option>
+              <option value="其他">其他</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="q-last6">证件号码后 6 位</label>
+            <input class="form-input" type="text" id="q-last6" name="id_last6" maxlength="6" placeholder="身份证填 6 位数字；护照/其他填后 6 位" />
+          </div>
         </div>
       </div>
       <div class="form-actions">
         <button type="submit" id="q-submit" class="btn btn-primary">查询</button>
-        <a class="btn btn-secondary" href="index.html">返回课程列表</a>
+        <a class="btn btn-secondary" href="index.html">返回首页</a>
       </div>
     </form>
 
@@ -57,7 +68,7 @@
 
     <section id="query-empty" class="result-card result-card--muted" hidden>
       <h2 class="result-card-title">未找到记录</h2>
-      <p>请核对姓名与后六位是否一致；若刚完成报名，可能尚未录入数据，请稍后再查或联系工作人员。</p>
+      <p>请核对姓名、证件类型与证件号码后六位是否一致；若刚完成报名，可能尚未录入数据，请稍后再查或联系工作人员。</p>
     </section>
 
     <section id="query-results" class="result-stack" hidden>
@@ -89,13 +100,13 @@
             <dd id="res-wechat">—</dd>
           </div>
         </dl>
-        <p class="result-footnote">身份证完整号码与哈希不在此展示；如需更正资料请联系管理员。</p>
+        <p class="result-footnote">完整证件号码与哈希不在此展示；如需更正资料请联系管理员。</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>唐卡传承公益体验课 · 东方字礼文化</p>
+    <p>唐卡传承公益体验课 · 菩提画院</p>
   </footer>
 
   <script src="js/sync-config.js"></script>

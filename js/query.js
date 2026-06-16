@@ -20,6 +20,13 @@
     return d;
   }
 
+  function normalizeIdTail(s, idType) {
+    var raw = String(s || "").trim().toUpperCase();
+    if (idType === "身份证") return normalizeLast6(raw);
+    raw = raw.replace(/\s/g, "");
+    return raw.length >= 6 ? raw.slice(-6) : raw;
+  }
+
   function resolveTencentQueryUrl() {
     var qc = window.TangkaQueryConfig || {};
     var u = qc.tencentQueryUrl;
@@ -45,14 +52,14 @@
     return sc.tencentProxySecret || "";
   }
 
-  function fetchTencentQuery(baseUrl, name, last6) {
+  function fetchTencentQuery(baseUrl, name, idType, last6) {
     return fetch(baseUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Webhook-Secret": queryWebhookSecret(),
       },
-      body: JSON.stringify({ name: name, id_last6: last6 }),
+      body: JSON.stringify({ name: name, id_type: idType, id_last6: last6 }),
     }).then(function (r) {
       return r.text().then(function (t) {
         var j = {};
@@ -100,7 +107,7 @@
     return base + "/rest/v1/rpc/query_registration_status";
   }
 
-  function fetchSupabaseQuery(name, last6) {
+  function fetchSupabaseQuery(name, idType, last6) {
     var sc = window.TangkaSyncConfig || {};
     var url = resolveSupabaseRpcUrl();
     if (!url) return Promise.reject(new Error("未配置 Supabase 查询"));
@@ -108,7 +115,11 @@
     return fetch(url, {
       method: "POST",
       headers: supabaseHeaders(sc.supabaseAnonKey),
-      body: JSON.stringify({ q_name: name, q_id_last6: last6 }),
+      body: JSON.stringify({
+        q_name: name,
+        q_id_type: idType,
+        q_id_last6: last6,
+      }),
     }).then(function (r) {
       return r.text().then(function (t) {
         var j = null;
@@ -122,7 +133,7 @@
             "Supabase 查询接口 HTTP " + r.status;
           if (r.status === 404 || String(msg).indexOf("Could not find") !== -1) {
             msg =
-              "Supabase 查询函数尚未创建，请先在 Supabase SQL Editor 执行 scripts/supabase-registrations.sql 的最新版。";
+              "Supabase 查询函数尚未更新，请先在 Supabase SQL Editor 执行 scripts/supabase-registrations.sql 的最新版。";
           }
           throw new Error(msg);
         }
@@ -202,12 +213,13 @@
     return lines.join("；");
   }
 
-  function findMatches(data, name, last6) {
+  function findMatches(data, name, idType, last6) {
     var list = (data && data.students) || [];
     var out = [];
     for (var i = 0; i < list.length; i++) {
       var s = list[i];
-      if (normalizeName(s.name) === name && String(s.idLast6 || "") === last6) {
+      var sameType = !s.idType || s.idType === idType;
+      if (normalizeName(s.name) === name && sameType && String(s.idLast6 || "") === last6) {
         out.push(s);
       }
     }
@@ -272,19 +284,44 @@
     var form = $("query-form");
     if (!form) return;
 
+    var typeEl = $("q-id-type");
+    var tailEl = $("q-last6");
+
+    function syncTailField() {
+      var idType = (typeEl && typeEl.value) || "身份证";
+      if (!tailEl) return;
+      if (idType === "身份证") {
+        tailEl.placeholder = "身份证后 6 位数字";
+        tailEl.inputMode = "numeric";
+        tailEl.pattern = "[0-9]{6}";
+      } else {
+        tailEl.placeholder = "证件号码后 6 位";
+        tailEl.inputMode = "text";
+        tailEl.removeAttribute("pattern");
+      }
+    }
+
+    if (typeEl) typeEl.addEventListener("change", syncTailField);
+    syncTailField();
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       hideAllPanels();
 
       var name = normalizeName($("q-name") && $("q-name").value);
-      var last6 = normalizeLast6($("q-last6") && $("q-last6").value);
+      var idType = ($("q-id-type") && $("q-id-type").value) || "身份证";
+      var last6 = normalizeIdTail($("q-last6") && $("q-last6").value, idType);
 
       if (!name) {
         showError("请填写姓名。");
         return;
       }
-      if (last6.length !== 6) {
-        showError("请填写身份证后 6 位数字。");
+      if (last6.length !== 6 || (idType === "身份证" && !/^\d{6}$/.test(last6))) {
+        showError(
+          idType === "身份证"
+            ? "请填写身份证后 6 位数字。"
+            : "请填写证件号码后 6 位。"
+        );
         return;
       }
 
@@ -298,7 +335,7 @@
       var chain;
 
       if (tencentBase) {
-        chain = fetchTencentQuery(tencentBase, name, last6).then(function (api) {
+        chain = fetchTencentQuery(tencentBase, name, idType, last6).then(function (api) {
           if (!api.ok) {
             throw new Error(api.error || "查询失败");
           }
@@ -309,7 +346,7 @@
           renderTencentResults(api);
         });
       } else if (resolveSupabaseRpcUrl()) {
-        chain = fetchSupabaseQuery(name, last6).then(renderSupabaseResults);
+        chain = fetchSupabaseQuery(name, idType, last6).then(renderSupabaseResults);
       } else {
         chain = fetch(DATA_URL, { cache: "no-store" })
           .then(function (r) {
@@ -317,7 +354,7 @@
             return r.json();
           })
           .then(function (data) {
-            var matches = findMatches(data, name, last6);
+            var matches = findMatches(data, name, idType, last6);
             if (matches.length === 0) {
               showNotFound();
             } else if (matches.length > 1) {

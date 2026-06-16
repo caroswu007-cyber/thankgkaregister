@@ -471,12 +471,6 @@
     var closedPanel = $("register-closed");
     var form = $("register-form");
 
-    if (!window.TangkaSite || !window.TangkaSite.canRegister()) {
-      if (closedPanel) closedPanel.hidden = false;
-      if (form) form.hidden = true;
-      return;
-    }
-
     if (closedPanel) closedPanel.hidden = true;
     if (form) form.hidden = false;
 
@@ -536,11 +530,6 @@
     formEl.addEventListener("submit", function (e) {
       e.preventDefault();
       clearFieldErrors();
-
-      if (!window.TangkaSite.canRegister()) {
-        showTopError("当前暂不开放报名或名额已满。");
-        return;
-      }
 
       var cfg = window.TangkaEmailConfig || {};
       var syncOk =

@@ -171,9 +171,30 @@
   function toggleLodgingSection() {
     var needs = $("field-needs-lodging") && $("field-needs-lodging").checked;
     var section = $("lodging-rules-section");
+    var emergencySection = $("emergency-contact-section");
     var agree = $("agree-conduct-rules");
+    var emergencyFields = [
+      $("field-emergency-name"),
+      $("field-emergency-phone"),
+      $("field-emergency-relation"),
+    ];
     if (section) section.hidden = !needs;
-    if (!needs && agree) agree.checked = false;
+    if (emergencySection) emergencySection.hidden = !needs;
+    if (!needs) {
+      if (agree) agree.checked = false;
+      emergencyFields.forEach(function (field) {
+        if (field) field.value = "";
+      });
+      ["emergency-name", "emergency-phone", "emergency-relation"].forEach(
+        function (fieldId) {
+          var err = $("err-" + fieldId);
+          if (err) {
+            err.textContent = "";
+            err.hidden = true;
+          }
+        }
+      );
+    }
   }
 
   function renderHealthQuestionnaire() {
@@ -260,9 +281,15 @@
       "联系地址：" + data.contactAddress,
       "需要住宿：" + (data.needsLodging ? "是" : "否"),
       "绘画基础：" + data.artBase,
-      "紧急联系人：" + data.emergencyName,
-      "紧急联系人电话：" + data.emergencyPhone,
-      "与申请人关系：" + data.emergencyRelation,
+    ];
+    if (data.needsLodging) {
+      lines.push(
+        "紧急联系人：" + data.emergencyName,
+        "紧急联系人电话：" + data.emergencyPhone,
+        "与申请人关系：" + data.emergencyRelation
+      );
+    }
+    lines.push(
       "身份证SHA256：" + idSha256,
       "",
       "健康声明（家属同意 / 身体声明 / 知晓规则）：",
@@ -270,8 +297,8 @@
       data.healthBody ? "✓ 身体健康声明" : "✗",
       data.healthRules ? "✓ 知晓活动规则" : "✗",
       "",
-      "健康状况声明表：",
-    ];
+      "健康状况声明表："
+    );
     var hq = data.healthAnswers || {};
     Object.keys(hq).forEach(function (k) {
       lines.push(k + "：" + hq[k]);
@@ -385,17 +412,19 @@
       showFieldError("art-base", "请选择是否有绘画基础");
       ok = false;
     }
-    if (!emergencyName) {
-      showFieldError("emergency-name", "请填写紧急联系人姓名");
-      ok = false;
-    }
-    if (!emergencyPhone || emergencyPhone.length < 6) {
-      showFieldError("emergency-phone", "请填写有效的紧急联系人电话");
-      ok = false;
-    }
-    if (!emergencyRelation) {
-      showFieldError("emergency-relation", "请填写与申请人的关系");
-      ok = false;
+    if (needsLodging) {
+      if (!emergencyName) {
+        showFieldError("emergency-name", "请填写紧急联系人姓名");
+        ok = false;
+      }
+      if (!emergencyPhone || emergencyPhone.length < 6) {
+        showFieldError("emergency-phone", "请填写有效的紧急联系人电话");
+        ok = false;
+      }
+      if (!emergencyRelation) {
+        showFieldError("emergency-relation", "请填写与申请人的关系");
+        ok = false;
+      }
     }
     if (!agreeHealthDeclaration) {
       showFieldError(

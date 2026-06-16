@@ -55,6 +55,7 @@ const publishEntries = [
   "index.html",
   "register.html",
   "query.html",
+  "about.html",
   "success.html",
   "admin.html",
   "css",

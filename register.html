@@ -170,14 +170,9 @@
 
       <div class="form-section">
         <h2 class="form-section-title">《申请者健康问题》特别声明</h2>
-        <p class="form-hint">请完整阅读下列声明，并在下方勾选确认；随后填写健康状况声明表。</p>
+        <p class="form-hint">请完整阅读下列声明，滑动至框内底部勾选确认；随后填写健康状况声明表。</p>
 
         <div id="health-declaration-doc" class="doc-scroll-panel" tabindex="0" aria-label="申请者健康问题特别声明全文"></div>
-
-        <label class="check-label">
-          <input type="checkbox" id="agree-health-declaration" name="agree_health_declaration" />
-          本人已阅读《申请者健康问题》特别声明，明白无误地知悉、理解全部内容，并同意其中责任免除条件。
-        </label>
         <p class="field-error" id="err-health-declaration" hidden role="status"></p>
 
         <div class="form-subsection">
@@ -201,12 +196,8 @@
         <h2 class="form-section-title">住宿 · 修行与自律</h2>
         <details class="doc-details" open>
           <summary>展开阅读《修行与自律 · 行为规范》</summary>
-          <div id="conduct-rules-doc" class="doc-scroll-panel doc-scroll-panel--tall"></div>
+          <div id="conduct-rules-doc" class="doc-scroll-panel doc-scroll-panel--tall" tabindex="0" aria-label="修行与自律行为规范全文"></div>
         </details>
-        <label class="check-label">
-          <input type="checkbox" id="agree-conduct-rules" name="agree_conduct_rules" />
-          本人已阅读并同意《修行与自律 · 行为规范》全部内容。
-        </label>
         <p class="field-error" id="err-conduct-rules" hidden role="status"></p>
       </div>
 

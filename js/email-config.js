@@ -28,6 +28,9 @@
  * 将 sheet_row_line 粘贴到腾讯表格，或使用 admin_plain 归档。
  */
 window.TangkaEmailConfig = {
+  /** 配置版本（部署后可在浏览器 Network 中核对是否已更新） */
+  configVersion: "2026-06-23-putihuayuan163",
+
   /** EmailJS Public Key（账户 — API Keys） */
   publicKey: "Nu1A_0bGsnr_l9-Sh",
 

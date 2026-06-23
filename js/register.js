@@ -651,6 +651,14 @@
           sheet_row_line: sheetRow,
           admin_plain: adminPlain,
           reply_to: data.email,
+          /* 管理员模板若沿用报名者版式，下列字段可展示完整报名信息 */
+          user_name: data.name,
+          user_email: data.email,
+          course_name: "唐卡报名 · 新申请",
+          course_dates: data.name + " · 尾号" + phoneTail,
+          course_place: adminPlain,
+          tips_short: headersLine + "\n" + sheetRow,
+          contact_email: orgEmail,
         };
         if (orgEmail) {
           adminParams.to_email = orgEmail;

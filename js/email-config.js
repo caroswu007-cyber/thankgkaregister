@@ -29,19 +29,18 @@
  */
 window.TangkaEmailConfig = {
   /** EmailJS Public Key（账户 — API Keys） */
-  publicKey: "HEFYCnnmAttscMfp6",
+  publicKey: "Nu1A_0bGsnr_l9-Sh",
 
   /**
-   * Email Service ID — 须在 EmailJS 中绑定 163 邮箱（organizerEmail）创建服务后填入。
-   * 若仍使用旧 Gmail 服务，确认邮件发件人可能显示为 Gmail 地址。
+   * Email Service ID — 163 SMTP（putihuayuan2026@163.com）
    */
-  serviceId: "service_t9dkc84",
+  serviceId: "service_putihuayuan163",
 
   /** 发给报名者的模板 ID */
-  templateApplicant: "template_qjl4zmw",
+  templateApplicant: "template_applicant",
 
   /** 发给管理员的通知模板 ID */
-  templateAdmin: "template_jni7nor",
+  templateAdmin: "template_admin",
 
   /**
    * 主办方挂靠邮箱：EmailJS 发信服务、管理员通知收件、学员回信、页脚展示均用此地址。

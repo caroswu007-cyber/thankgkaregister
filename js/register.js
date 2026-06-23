@@ -624,7 +624,7 @@
           contact_email: orgEmail,
           reply_to: orgEmail,
           tips_short:
-            "请查收本邮件；如有疑问可回信至 " +
+            "如有疑问可回信至 " +
             orgEmail +
             "，或留意微信通知。",
         };

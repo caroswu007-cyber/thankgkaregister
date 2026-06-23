@@ -5,6 +5,7 @@
   var STORAGE_OPEN = "tangka_reg_open";
   var STORAGE_REMAINING = "tangka_reg_remaining";
   var DEFAULT_TOTAL = 108;
+  var CONTACT_EMAIL = "putihuayuan2026@163.com";
 
   /** file:// 打开页面时浏览器可能禁用 localStorage，需包裹避免整页脚本报错 */
   function storageGet(key) {
@@ -52,6 +53,7 @@
     STORAGE_OPEN: STORAGE_OPEN,
     STORAGE_REMAINING: STORAGE_REMAINING,
     DEFAULT_TOTAL: DEFAULT_TOTAL,
+    CONTACT_EMAIL: CONTACT_EMAIL,
     readRemaining: readRemaining,
     isRegistrationOpen: isRegistrationOpen,
     storageSet: storageSet,
@@ -123,5 +125,25 @@
         }
       }
     },
+
+    injectFooterContact: function () {
+      var email = CONTACT_EMAIL;
+      var footers = document.querySelectorAll(".site-footer");
+      for (var i = 0; i < footers.length; i++) {
+        if (footers[i].querySelector(".site-footer-contact")) continue;
+        var p = document.createElement("p");
+        p.className = "site-footer-contact";
+        var link = document.createElement("a");
+        link.href = "mailto:" + email;
+        link.textContent = email;
+        p.appendChild(document.createTextNode("咨询邮箱："));
+        p.appendChild(link);
+        footers[i].appendChild(p);
+      }
+    },
   };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.TangkaSite) TangkaSite.injectFooterContact();
+  });
 })();

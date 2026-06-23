@@ -6,15 +6,18 @@
  * 管理员可将管理员模板全文粘贴至腾讯文档/表格留存。
  *
  * ─── 报名者模板 templateApplicant 建议变量 ─────────────────────────
+ *   {{to_email}}      报名者邮箱（模板 To email 填 {{to_email}}）
  *   {{user_name}}     报名者姓名
- *   {{user_email}}    报名者邮箱（收件人已设为报名者时可仅用正文称呼）
+ *   {{user_email}}    报名者邮箱
  *   {{course_name}}   固定文案：唐卡传承公益体验课
  *   {{course_dates}}  固定文案：2026年7月3日 — 7月9日（共七天）
  *   {{course_place}}  地点一整句（可从下文常量拷贝）
+ *   {{contact_email}} 主办方咨询邮箱（putihuayuan2026@163.com）
+ *   {{reply_to}}      建议与 contact_email 相同，便于学员回信咨询
  *   {{tips_short}}    简短温馨提示一句（可选）
  *
  * ─── 管理员模板 templateAdmin 建议变量 ─────────────────────────────
- *   {{to_email}}            管理员收件（与 email-config.js 中 adminNotifyEmail 一致；模板 To 填 {{to_email}}）
+ *   {{to_email}}            管理员收件（与 organizerEmail 一致；模板 To 填 {{to_email}}）
  *   {{admin_subject_hint}}  邮件标题摘要：姓名 · 手机尾号（示例）
  *   {{sheet_headers_line}}  TSV 表头一行（与腾讯表格第一行一致，便于整表粘贴）
  *   {{sheet_row_line}}      TSV 数据一行（粘贴到腾讯表格下一行）
@@ -28,7 +31,10 @@ window.TangkaEmailConfig = {
   /** EmailJS Public Key（账户 — API Keys） */
   publicKey: "HEFYCnnmAttscMfp6",
 
-  /** Email Service ID（电子邮件服务 ID）— 在 Email Services 中创建 Gmail 并「Create Service」后复制 */
+  /**
+   * Email Service ID — 须在 EmailJS 中绑定 163 邮箱（organizerEmail）创建服务后填入。
+   * 若仍使用旧 Gmail 服务，确认邮件发件人可能显示为 Gmail 地址。
+   */
   serviceId: "service_t9dkc84",
 
   /** 发给报名者的模板 ID */
@@ -38,8 +44,11 @@ window.TangkaEmailConfig = {
   templateAdmin: "template_jni7nor",
 
   /**
-   * 管理员通知收件邮箱（与 Account 页通知邮箱一致即可；模板 To 填 {{to_email}}）。
+   * 主办方挂靠邮箱：EmailJS 发信服务、管理员通知收件、学员回信、页脚展示均用此地址。
    */
+  organizerEmail: "putihuayuan2026@163.com",
+
+  /** @deprecated 请改用 organizerEmail；保留以兼容旧引用 */
   adminNotifyEmail: "putihuayuan2026@163.com",
 
   /** 固定课程文案（模板与代码共用） */

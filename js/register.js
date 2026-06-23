@@ -91,6 +91,12 @@
     );
   }
 
+  function organizerEmail(cfg) {
+    return String(
+      (cfg && (cfg.organizerEmail || cfg.adminNotifyEmail)) || ""
+    ).trim();
+  }
+
   function clearFieldErrors() {
     var nodes = document.querySelectorAll(".field-error");
     for (var i = 0; i < nodes.length; i++) {
@@ -607,6 +613,7 @@
 
       function sendApplicantEmail(hash) {
         if (!isEmailConfigured()) return Promise.resolve();
+        var orgEmail = organizerEmail(cfg);
         var applicantParams = {
           to_email: data.email,
           user_name: data.name,
@@ -614,8 +621,12 @@
           course_name: cfg.courseName,
           course_dates: cfg.courseDates,
           course_place: cfg.coursePlace,
+          contact_email: orgEmail,
+          reply_to: orgEmail,
           tips_short:
-            "请查收本邮件；可同时留意手机短信与微信通知（若有）。",
+            "请查收本邮件；如有疑问可回信至 " +
+            orgEmail +
+            "，或留意微信通知。",
         };
         return emailjs.send(
           cfg.serviceId,
@@ -633,7 +644,7 @@
         var adminPlain = buildAdminPlain(cfg, data, hash);
         var phoneTail =
           data.phone.length >= 4 ? data.phone.slice(-4) : data.phone;
-        var adminNotify = String(cfg.adminNotifyEmail || "").trim();
+        var orgEmail = organizerEmail(cfg);
         var adminParams = {
           admin_subject_hint: data.name + " · 尾号" + phoneTail,
           sheet_headers_line: headersLine,
@@ -641,8 +652,8 @@
           admin_plain: adminPlain,
           reply_to: data.email,
         };
-        if (adminNotify) {
-          adminParams.to_email = adminNotify;
+        if (orgEmail) {
+          adminParams.to_email = orgEmail;
         }
         return emailjs.send(cfg.serviceId, cfg.templateAdmin, adminParams);
       }
@@ -689,7 +700,7 @@
             msg =
               "报名者确认邮件已发出，但管理员通知失败：" +
               raw +
-              "。请检查管理员模板、收件人字段（如 {{to_email}}）及 adminNotifyEmail 配置。";
+              "。请检查管理员模板、收件人字段（如 {{to_email}}）及 organizerEmail 配置。";
           }
           showTopError(
             msg +

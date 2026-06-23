@@ -623,10 +623,7 @@
           course_place: cfg.coursePlace,
           contact_email: orgEmail,
           reply_to: orgEmail,
-          tips_short:
-            "如有疑问可回信至 " +
-            orgEmail +
-            "，或留意微信通知。",
+          tips_short: "请留意微信通知。",
         };
         return emailjs.send(
           cfg.serviceId,
